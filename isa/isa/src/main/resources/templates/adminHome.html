@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Administrator</title>
+    <link rel="stylesheet" href="styles.css"> <!-- Dodajte svoj CSS fajl -->
+</head>
+<body>
+<h1>Dobrodošli, Administrator</h1>
+<nav>
+    <ul>
+        <li><a th:href="@{/admin/posts}">Lista objava svih korisnika</a></li>
+        <li><a th:href="@{/admin/trends}">Prikaz trendova na mreži</a></li>
+        <li><a th:href="@{/admin/analytics}">Analitika aplikacije</a></li>
+        <li><a th:href="@{/admin/users}">Prikaz profila svih korisnika</a></li>
+    </ul>
+</nav>
+</body>
+</html>
