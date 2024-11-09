@@ -1,25 +1,48 @@
 package com.onlybuns.isa.model;
 
+import jakarta.persistence.*;
+
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.ArrayList;
+import java.util.List;
 
+@Entity
+@Table(name="posts")
 public class Post {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private String description;
     private String imagePath; // Putanja do slike zeca
+
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
+
+    @OneToOne
+    @JoinColumn(name="location_id")
     private Location location; // Lokacija objave sa koordinatama ili adresom
+
     private LocalDateTime creationTime;
     private int likesCount;
+/*
+
+    @OneToMany(mappedBy = "post")
     private List<Comment> comments;
+*/
 
     public Post() {
-        this.creationTime = LocalDateTime.now();
+       /* this.creationTime = LocalDateTime.now();
         this.likesCount = 0;
         this.comments = new ArrayList<>();
-    }
+    */}
 
-    public Post(String description, String imagePath, Location location) {
+    // NIKOLINO ZAKOMENTARISANO:
+
+   /* public Post(String description, String imagePath, Location location) {
         this.description = description;
         this.imagePath = imagePath;
         this.location = location;
@@ -97,5 +120,37 @@ public class Post {
                 ", likesCount=" + likesCount +
                 ", comments=" + comments +
                 '}';
+    }*/
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public Location getLocation() {
+        return location;
+    }
+
+    public void setLocation(Location location) {
+        this.location = location;
     }
 }
