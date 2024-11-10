@@ -12,8 +12,9 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     private String username;
+    private String name;
+    private String surname;
     private String email;
 
     public User() {}
@@ -31,6 +32,8 @@ public class User {
     @OneToMany(mappedBy = "user")
     private List<Comment> comments;  // Korisnik ima komentare
 
+    @OneToMany(mappedBy = "user")
+    private List<Like> likes;
 
     public Long getId(){
         return id;
@@ -49,5 +52,29 @@ public class User {
     }
     public void setEmail(String email){
         this.email = email;
+    }
+
+    public String getSurname() {
+        return surname;
+    }
+
+    public void setSurname(String surname) {
+        this.surname = surname;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public List<Post> getPosts() {
+        return posts;
+    }
+
+    public void setPosts(List<Post> posts) {
+        this.posts = posts;
     }
 }

@@ -21,6 +21,8 @@ public class Comment{
     private String content;
     private LocalDateTime timestamp;
 
+    public Comment() {}
+
     public Long getId() {
         return id;
     }

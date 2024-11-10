@@ -17,13 +17,13 @@ moguce je konfigurisati i vise servera
 @Configuration
 public class OpenApiConfig {
 
-    @Bean
+   /* @Bean
     public OpenAPI openApi() {
         ArrayList<Server> servers = new ArrayList<>(1);
         servers.add(new Server().url("http://localhost:8080/").description("development server"));
-        /*servers.add(new Server().url("http://qa:8081/").description("test server"));
+        *//*servers.add(new Server().url("http://qa:8081/").description("test server"));
         servers.add(new Server().url("http://www.rest-example.com/").description("production server"));
-*/
+*//*
         return new OpenAPI()
                 .info(new Info()
                         .title("Rest example")
@@ -38,5 +38,5 @@ public class OpenApiConfig {
                 )
                 .servers(servers);
     }
-
+*/
 }

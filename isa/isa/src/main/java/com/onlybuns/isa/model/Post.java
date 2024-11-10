@@ -15,30 +15,98 @@ public class Post {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @ManyToOne
+    @JoinColumn(name = "userId", nullable = false)
+    private User user;
+
     private String description;
     private String imagePath; // Putanja do slike zeca
-
-    @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
-    private User user;
 
     @OneToOne
     @JoinColumn(name="location_id")
     private Location location; // Lokacija objave sa koordinatama ili adresom
 
     private LocalDateTime creationTime;
-    private int likesCount;
-/*
+
+    @OneToMany(mappedBy = "post")
+    private List<Like> likes;
 
     @OneToMany(mappedBy = "post")
     private List<Comment> comments;
-*/
 
-    public Post() {
-       /* this.creationTime = LocalDateTime.now();
-        this.likesCount = 0;
-        this.comments = new ArrayList<>();
-    */}
+    public Post() {}
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getImagePath() {
+        return imagePath;
+    }
+
+    public void setImagePath(String imagePath) {
+        this.imagePath = imagePath;
+    }
+
+    public Location getLocation() {
+        return location;
+    }
+
+    public void setLocation(Location location) {
+        this.location = location;
+    }
+
+    public LocalDateTime getCreationTime() {
+        return creationTime;
+    }
+
+    public void setCreationTime(LocalDateTime creationTime) {
+        this.creationTime = creationTime;
+    }
+
+    public List<Like> getLikes() {
+        return likes;
+    }
+
+    public void setLikes(List<Like> likes) {
+        this.likes = likes;
+    }
+
+    public List<Comment> getComments() {
+        return comments;
+    }
+
+    public void setComments(List<Comment> comments) {
+        this.comments = comments;
+    }
+
+    public int getLikesCount() {
+        return (likes != null) ? likes.size() : 0;
+    }
+
+    public int getCommentsCount() {
+        return (comments != null) ? comments.size() : 0;
+    }
 
     // NIKOLINO ZAKOMENTARISANO:
 
@@ -122,35 +190,4 @@ public class Post {
                 '}';
     }*/
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    public Location getLocation() {
-        return location;
-    }
-
-    public void setLocation(Location location) {
-        this.location = location;
-    }
 }
