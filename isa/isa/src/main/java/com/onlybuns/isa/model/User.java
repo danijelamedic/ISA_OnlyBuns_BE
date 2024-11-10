@@ -3,6 +3,7 @@ package com.onlybuns.isa.model;
 import com.onlybuns.isa.dto.UserDto;
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -21,19 +22,21 @@ public class User {
     public User(UserDto user){
         this.id = user.getId();
         this.username = user.getUsername();
+        this.name = user.getName();
+        this.surname = user.getSurname();
         this.email = user.getEmail();
     }
 
     // ... Getters and Setters ...
 
-    @OneToMany(mappedBy = "user")
-    private List<Post> posts;  // Korisnik ima objave
+    /*@OneToMany(mappedBy = "user", cascade = CascadeType.PERSIST)
+    private List<Post> posts = new ArrayList<>();  // Korisnik ima objave
 
-    @OneToMany(mappedBy = "user")
-    private List<Comment> comments;  // Korisnik ima komentare
+    @OneToMany(mappedBy = "user", cascade = CascadeType.PERSIST)
+    private List<Comment> comments = new ArrayList<>();  // Korisnik ima komentare
 
-    @OneToMany(mappedBy = "user")
-    private List<Like> likes;
+    @OneToMany(mappedBy = "user", cascade = CascadeType.PERSIST)
+    private List<Like> likes = new ArrayList<>();*/
 
     public Long getId(){
         return id;
@@ -70,11 +73,11 @@ public class User {
         this.name = name;
     }
 
-    public List<Post> getPosts() {
+    /*public List<Post> getPosts() {
         return posts;
     }
 
     public void setPosts(List<Post> posts) {
         this.posts = posts;
-    }
+    }*/
 }

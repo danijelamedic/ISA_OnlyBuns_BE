@@ -9,17 +9,14 @@ import org.springframework.stereotype.Service;
 import org.springframework.beans.factory.annotation.Autowired;
 
 @Service
-public class UserService implements IUserService{
+public class UserService {
 
     @Autowired
     private UserRepository userRepository;
 
-    @Override
-    public User create(UserDto user) throws Exception{
-        if (user.getId() != null) {
-            throw new Exception("Id mora biti null prilikom perzistencije novog entiteta.");
-        }
-        User savedUser = new User(user);
-        return userRepository.save(savedUser);
+    public User findById(long id){ return userRepository.findById(id); }
+
+    public User create(User user){
+        return userRepository.save(user);
     }
 }

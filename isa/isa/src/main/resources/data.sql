@@ -19,13 +19,36 @@ insert into locations (id, latitude, longitude, address) values (5, 46.0511, 14.
 insert into public.posts (creation_time, id, location_id, user_id, description, image_path) values ('2024-11-10 10:00:00', 1, 1, 7, 'Post description for Bojana', 'path/to/image1.jpg');
 insert into public.posts (creation_time, id, location_id, user_id, description, image_path) values ('2024-11-10 11:00:00', 2, 2, 8, 'Post description for Milana', 'path/to/image2.jpg');
 insert into public.posts (creation_time, id, location_id, user_id, description, image_path) values ('2024-11-10 12:00:00', 3, 3, 9, 'Post description for Jovana', 'path/to/image3.jpg');
-
+insert into public.posts (creation_time, id, location_id, user_id, description, image_path) values ('2024-11-10 13:00:00', 4, 4, 7, 'Post description for Bojana 2', 'path/to/image4.jpg');
+insert into public.posts (creation_time, id, location_id, user_id, description, image_path) values ('2024-11-10 14:00:00', 5, 5, 6, 'Post description for Zoran', 'path/to/image5.jpg');
+insert into public.posts (creation_time, id, location_id, user_id, description, image_path) values ('2024-11-10 15:00:00', 6, 1, 5, 'Post description for Pera', 'path/to/image6.jpg');
 
 insert into public.likes (id, post_id, user_id) values (1, 1, 8);
 insert into public.likes (id, post_id, user_id) values (2, 2, 9);
 insert into public.likes (id, post_id, user_id) values (3, 3, 7);
+insert into public.likes (id, post_id, user_id) values (4, 4, 8);
+insert into public.likes (id, post_id, user_id) values (5, 4, 9);
+insert into public.likes (id, post_id, user_id) values (6, 4, 6);
+insert into public.likes (id, post_id, user_id) values (7, 5, 7);
+insert into public.likes (id, post_id, user_id) values (8, 5, 8);
+insert into public.likes (id, post_id, user_id) values (9, 5, 9);
+insert into public.likes (id, post_id, user_id) values (10, 6, 7);
+insert into public.likes (id, post_id, user_id) values (11, 6, 8);
+insert into public.likes (id, post_id, user_id) values (12, 6, 9);
+insert into public.likes (id, post_id, user_id) values (13, 4, 7);
+insert into public.likes (id, post_id, user_id) values (14, 4, 5);
+insert into public.likes (id, post_id, user_id) values (15, 4, 4);
 
 
 insert into public.comments (id, post_id, "timestamp", user_id, content) values (1, 1, '2024-11-10 10:05:00', 8, 'This is a comment');
 insert into public.comments (id, post_id, "timestamp", user_id, content) values (2, 2, '2024-11-10 11:05:00', 9, 'This is a comment');
 insert into public.comments (id, post_id, "timestamp", user_id, content) values (3, 3, '2024-11-10 12:05:00', 7, 'This is a comment');
+insert into public.comments (id, post_id, "timestamp", user_id, content) values (4, 1, '2024-11-10 10:10:00', 9, 'Great post!');
+insert into public.comments (id, post_id, "timestamp", user_id, content) values (5, 1, '2024-11-10 10:15:00', 7, 'Interesting thought!');
+insert into public.comments (id, post_id, "timestamp", user_id, content) values (6, 2, '2024-11-10 11:10:00', 8, 'Amazing content!');
+insert into public.comments (id, post_id, "timestamp", user_id, content) values (7, 2, '2024-11-10 11:20:00', 7, 'Very informative!');
+insert into public.comments (id, post_id, "timestamp", user_id, content) values (8, 3, '2024-11-10 12:10:00', 8, 'Nice post!');
+insert into public.comments (id, post_id, "timestamp", user_id, content) values (9, 3, '2024-11-10 12:15:00', 9, 'Keep it up!');
+insert into public.comments (id, post_id, "timestamp", user_id, content) values (10, 1, '2024-11-10 10:20:00', 8, 'Thanks for sharing!');
+insert into public.comments (id, post_id, "timestamp", user_id, content) values (11, 2, '2024-11-10 11:25:00', 9, 'Really cool!');
+insert into public.comments (id, post_id, "timestamp", user_id, content) values (12, 3, '2024-11-10 12:20:00', 7, 'Very helpful!');

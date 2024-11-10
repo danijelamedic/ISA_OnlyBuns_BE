@@ -22,16 +22,16 @@ public class Post {
     private String description;
     private String imagePath; // Putanja do slike zeca
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name="location_id")
     private Location location; // Lokacija objave sa koordinatama ili adresom
 
     private LocalDateTime creationTime;
 
-    @OneToMany(mappedBy = "post")
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
     private List<Like> likes;
 
-    @OneToMany(mappedBy = "post")
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
     private List<Comment> comments;
 
     public Post() {}

@@ -11,6 +11,7 @@ public class LikeDto {
     public LikeDto() {}
 
     public LikeDto(Like like){
+        super();
         this.id = like.getId();
         this.userId = like.getUser().getId();
         this.postId = like.getPost().getId();
