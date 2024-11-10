@@ -23,8 +23,8 @@ public class PostDto {
         this.imagePath = post.getImagePath();
         this.creationTime = post.getCreationTime();
         this.locationId = post.getLocation().getId();
-        this.likes = 0;
-        this.comments = 0;
+        this.likes = post.getLikes().size();  // Veličina liste lajkova
+        this.comments = post.getComments().size();  // Veličina liste komentara
     }
 
 

@@ -1,12 +1,15 @@
 package com.onlybuns.isa.service;
 
 import com.onlybuns.isa.dto.UserDto;
+import com.onlybuns.isa.model.Post;
 import com.onlybuns.isa.model.User;
 import com.onlybuns.isa.repository.InMemoryUserRepository;
 import com.onlybuns.isa.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.List;
 
 @Service
 public class UserService implements IUserService{
@@ -21,5 +24,9 @@ public class UserService implements IUserService{
         }
         User savedUser = new User(user);
         return userRepository.save(savedUser);
+    }
+
+    public List<User> findAll() {
+        return userRepository.findAll();
     }
 }

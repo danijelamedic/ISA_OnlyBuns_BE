@@ -1,5 +1,6 @@
 package com.onlybuns.isa.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.onlybuns.isa.dto.UserDto;
 import jakarta.persistence.*;
 
@@ -26,8 +27,9 @@ public class User {
 
     // ... Getters and Setters ...
 
+    @JsonManagedReference
     @OneToMany(mappedBy = "user")
-    private List<Post> posts;  // Korisnik ima objave
+    private List<Post> posts;
 
     @OneToMany(mappedBy = "user")
     private List<Comment> comments;  // Korisnik ima komentare

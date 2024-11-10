@@ -4,7 +4,7 @@ insert into users (id, email, name, surname, username) values (3, 'ivana@example
 insert into users (id, email, name, surname, username) values (4, 'bojan@example.com', 'Bojan', 'Bojanović', 'bojan2014');
 insert into users (id, email, name, surname, username) values (5, 'pera@example.com', 'Pera', 'Perić', 'pera2014');
 insert into users (id, email, name, surname, username) values (6, 'zoran@example.com', 'Zoran', 'Zoranović', 'zoran2014');
-insert into users (id, email, name, surname, username) values (7, 'bojana@example.com', 'Bojana', 'Bojanović', 'bojana2014');
+insert into users (id, email, name, surname, username) values (7, 'bojana@example.com', 'Bojana', 'Bojanović', 'bojanica2014');
 insert into users (id, email, name, surname, username) values (8, 'milana@example.com', 'Milana', 'Milanović', 'milana2014');
 insert into users (id, email, name, surname, username) values (9, 'jovana@example.com', 'Jovana', 'Jovanić', 'jovana2014');
 
