@@ -1,19 +1,19 @@
-insert into users (id, email, name, surname, username) values (1, 'marko@example.com', 'Marko', 'Marković', 'marko');
-insert into users (id, email, name, surname, username) values (2, 'milan@example.com', 'Milan', 'Milanović', 'milan2014');
-insert into users (id, email, name, surname, username) values (3, 'ivana@example.com', 'Ivana', 'Ivanović', 'ivana2014');
-insert into users (id, email, name, surname, username) values (4, 'bojan@example.com', 'Bojan', 'Bojanović', 'bojan2014');
-insert into users (id, email, name, surname, username) values (5, 'pera@example.com', 'Pera', 'Perić', 'pera2014');
-insert into users (id, email, name, surname, username) values (6, 'zoran@example.com', 'Zoran', 'Zoranović', 'zoran2014');
-insert into users (id, email, name, surname, username) values (7, 'bojana@example.com', 'Bojana', 'Bojanović', 'bojana2014');
-insert into users (id, email, name, surname, username) values (8, 'milana@example.com', 'Milana', 'Milanović', 'milana2014');
-insert into users (id, email, name, surname, username) values (9, 'jovana@example.com', 'Jovana', 'Jovanić', 'jovana2014');
+insert into public.users (id, email, name, surname, username) values (1, 'marko@example.com', 'Marko', 'Marković', 'marko');
+insert into public.users (id, email, name, surname, username) values (2, 'milan@example.com', 'Milan', 'Milanović', 'milan2014');
+insert into public.users (id, email, name, surname, username) values (3, 'ivana@example.com', 'Ivana', 'Ivanović', 'ivana2014');
+insert into public.users (id, email, name, surname, username) values (4, 'bojan@example.com', 'Bojan', 'Bojanović', 'bojan2014');
+insert into public.users (id, email, name, surname, username) values (5, 'pera@example.com', 'Pera', 'Perić', 'pera2014');
+insert into public.users (id, email, name, surname, username) values (6, 'zoran@example.com', 'Zoran', 'Zoranović', 'zoran2014');
+insert into public.users (id, email, name, surname, username) values (7, 'bojana@example.com', 'Bojana', 'Bojanović', 'bojana2014');
+insert into public.users (id, email, name, surname, username) values (8, 'milana@example.com', 'Milana', 'Milanović', 'milana2014');
+insert into public.users (id, email, name, surname, username) values (9, 'jovana@example.com', 'Jovana', 'Jovanić', 'jovana2014');
 
 
-insert into locations (id, latitude, longitude, address) values (1, 44.8176, 20.4633, 'Beograd, Srbija');
-insert into locations (id, latitude, longitude, address) values (2, 45.2671, 19.8335, 'Novi Sad, Srbija');
-insert into locations (id, latitude, longitude, address) values (3, 43.8486, 18.3564, 'Sarajevo, Bosna i Hercegovina');
-insert into locations (id, latitude, longitude, address) values (4, 42.6611, 21.1655, 'Skoplje, Severna Makedonija');
-insert into locations (id, latitude, longitude, address) values (5, 46.0511, 14.5051, 'Ljubljana, Slovenija');
+insert into public.locations (id, latitude, longitude, address) values (1, 44.8176, 20.4633, 'Beograd, Srbija');
+insert into public.locations (id, latitude, longitude, address) values (2, 45.2671, 19.8335, 'Novi Sad, Srbija');
+insert into public.locations (id, latitude, longitude, address) values (3, 43.8486, 18.3564, 'Sarajevo, Bosna i Hercegovina');
+insert into public.locations (id, latitude, longitude, address) values (4, 42.6611, 21.1655, 'Skoplje, Severna Makedonija');
+insert into public.locations (id, latitude, longitude, address) values (5, 46.0511, 14.5051, 'Ljubljana, Slovenija');
 
 
 insert into public.posts (creation_time, id, location_id, user_id, description, image_path) values ('2024-11-10 10:00:00', 1, 1, 7, 'Post description for Bojana', 'path/to/image1.jpg');

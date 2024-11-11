@@ -7,6 +7,8 @@ import com.onlybuns.isa.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.beans.factory.annotation.Autowired;
+//import org.springframework.security.core.userdetails.UsernameNotFoundException;
+
 
 @Service
 public class UserService implements IUserService{
@@ -22,4 +24,15 @@ public class UserService implements IUserService{
         User savedUser = new User(user);
         return userRepository.save(savedUser);
     }
+
+    @Autowired
+    public UserService(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
+
+//    public User getUserByUsername(String username) {
+//        return userRepository.findByUsername(username)
+//                .orElseThrow(() -> new UsernameNotFoundException("User not found with username: " + username));
+//    }
+
 }
