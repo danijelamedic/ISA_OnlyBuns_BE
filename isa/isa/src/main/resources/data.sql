@@ -1,12 +1,12 @@
-insert into public.users (id, email, name, surname, address, username, password, role) values (1, 'marko@example.com', 'Marko', 'Marković', 'Ulica Marka 1', 'marko', 'Marko123', 0);
-insert into public.users (id, email, name, surname, address, username, password, role) values (2, 'milan@example.com', 'Milan', 'Milanović', 'Ulica Milana 2', 'milan2014', 'Milan123', 1);
-insert into public.users (id, email, name, surname, address, username, password, role) values (3, 'ivana@example.com', 'Ivana', 'Ivanović', 'Ulica Ivane 3', 'ivana2014', 'Ivana123', 1);
-insert into public.users (id, email, name, surname, address, username, password, role) values (4, 'bojan@example.com', 'Bojan', 'Bojanović', 'Ulica Bojana 4', 'bojan2014', 'Bojan123', 1);
-insert into public.users (id, email, name, surname, address, username, password, role) values (5, 'pera@example.com', 'Pera', 'Perić', 'Ulica Pere 5', 'pera2014', 'Pera123', 1);
-insert into public.users (id, email, name, surname, address, username, password, role) values (6, 'zoran@example.com', 'Zoran', 'Zoranović', 'Ulica Zorana 6', 'zoran2014', 'Zoran123', 1);
-insert into public.users (id, email, name, surname, address, username, password, role) values (7, 'bojana@example.com', 'Bojana', 'Bojanović', 'Ulica Bojane 7', 'bojana2014', 'Bojana123', 1);
-insert into public.users (id, email, name, surname, address, username, password, role) values (8, 'milana@example.com', 'Milana', 'Milanović', 'Ulica Milane 8', 'milana2014', 'Milana123', 1);
-insert into public.users (id, email, name, surname, address, username, password, role) values (9, 'jovana@example.com', 'Jovana', 'Jovanić', 'Ulica Jovane 9', 'jovana2014', 'Jovana123', 1);
+insert into public.users (id, email, name, surname, address, username, password, role) values (1, 'marko@example.com', 'Marko', 'Marković', 'Ulica Marka 1', 'marko', '$2a$10$AfamkYjZEgyFSDqzlj/QLeN13GcmvFhG/XMmQZQONq/1F8iLTSC92', 0);
+insert into public.users (id, email, name, surname, address, username, password, role) values (2, 'milan@example.com', 'Milan', 'Milanović', 'Ulica Milana 2', 'milan2014', '$2a$10$AfamkYjZEgyFSDqzlj/QLeN13GcmvFhG/XMmQZQONq/1F8iLTSC92', 1);
+insert into public.users (id, email, name, surname, address, username, password, role) values (3, 'ivana@example.com', 'Ivana', 'Ivanović', 'Ulica Ivane 3', 'ivana2014', '$2a$10$AfamkYjZEgyFSDqzlj/QLeN13GcmvFhG/XMmQZQONq/1F8iLTSC92', 1);
+insert into public.users (id, email, name, surname, address, username, password, role) values (4, 'bojan@example.com', 'Bojan', 'Bojanović', 'Ulica Bojana 4', 'bojan2014', '$2a$10$AfamkYjZEgyFSDqzlj/QLeN13GcmvFhG/XMmQZQONq/1F8iLTSC92', 1);
+insert into public.users (id, email, name, surname, address, username, password, role) values (5, 'pera@example.com', 'Pera', 'Perić', 'Ulica Pere 5', 'pera2014', '$2a$10$AfamkYjZEgyFSDqzlj/QLeN13GcmvFhG/XMmQZQONq/1F8iLTSC92', 1);
+insert into public.users (id, email, name, surname, address, username, password, role) values (6, 'zoran@example.com', 'Zoran', 'Zoranović', 'Ulica Zorana 6', 'zoran2014', '$2a$10$AfamkYjZEgyFSDqzlj/QLeN13GcmvFhG/XMmQZQONq/1F8iLTSC92', 1);
+insert into public.users (id, email, name, surname, address, username, password, role) values (7, 'bojana@example.com', 'Bojana', 'Bojanović', 'Ulica Bojane 7', 'bojana2014', '$2a$10$AfamkYjZEgyFSDqzlj/QLeN13GcmvFhG/XMmQZQONq/1F8iLTSC92', 1);
+insert into public.users (id, email, name, surname, address, username, password, role) values (8, 'milana@example.com', 'Milana', 'Milanović', 'Ulica Milane 8', 'milana2014', '$2a$10$AfamkYjZEgyFSDqzlj/QLeN13GcmvFhG/XMmQZQONq/1F8iLTSC92', 1);
+insert into public.users (id, email, name, surname, address, username, password, role) values (9, 'jovana@example.com', 'Jovana', 'Jovanić', 'Ulica Jovane 9', 'jovana2014', '$2a$10$AfamkYjZEgyFSDqzlj/QLeN13GcmvFhG/XMmQZQONq/1F8iLTSC92', 1);
 
 
 insert into public.locations (id, latitude, longitude, address) values (1, 44.8176, 20.4633, 'Beograd, Srbija');

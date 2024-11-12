@@ -19,14 +19,14 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/posts/**").permitAll()
                         .requestMatchers("/api/auth/**").permitAll()
-                        .requestMatchers("/api/users", "/api/users/register").permitAll()  // Omogućeno za rute za korisnike
+                        .requestMatchers("/api/users", "/api/users/register", "/api/users/login").permitAll()  // Omogućeno za rute za korisnike
                         .anyRequest().authenticated()
-                )
-                .formLogin(form -> form
-                        .loginPage("/login")
-                        .permitAll()
-                )
-                .logout(logout -> logout.permitAll());
+                );
+//                .formLogin(form -> form
+//                        .loginPage("/login")
+//                        .permitAll()
+//                )
+//                .logout(logout -> logout.permitAll());
 
         return http.build();
     }

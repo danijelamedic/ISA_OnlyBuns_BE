@@ -1,6 +1,7 @@
 package com.onlybuns.isa.service;
 
 import com.onlybuns.isa.dto.UserDto;
+import com.onlybuns.isa.dto.UserLoginDto;
 import com.onlybuns.isa.dto.UserRegistrationDto;
 import com.onlybuns.isa.model.User;
 import com.onlybuns.isa.repository.InMemoryUserRepository;
@@ -8,6 +9,7 @@ import com.onlybuns.isa.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -81,6 +83,19 @@ public class UserService implements IUserService{
 //        }
 //    }
 
+
+    public boolean authenticateUser(UserLoginDto userLoginDto) {
+        User user = userRepository.findByUsername(userLoginDto.getUsername())
+                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+
+        // Proverite lozinku
+        return passwordEncoder.matches(userLoginDto.getPassword(), user.getPassword());
+    }
+
+    public User findByUsername(String username) {
+        return userRepository.findByUsername(username)
+                .orElse(null);  // Vraća null ako korisnik nije pronađen
+    }
 
 //    public User getUserByUsername(String username) {
 //        return userRepository.findByUsername(username)

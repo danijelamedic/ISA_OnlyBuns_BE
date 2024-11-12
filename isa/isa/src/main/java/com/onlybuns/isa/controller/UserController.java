@@ -1,6 +1,7 @@
 package com.onlybuns.isa.controller;
 
 import com.onlybuns.isa.dto.UserDto;
+import com.onlybuns.isa.dto.UserLoginDto;
 import com.onlybuns.isa.dto.UserRegistrationDto;
 import com.onlybuns.isa.model.User;
 import com.onlybuns.isa.service.UserService;
@@ -15,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -29,10 +31,12 @@ public class UserController {
 
 
     private UserService userService;
+    private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public UserController(UserService userService) {
+    public UserController(UserService userService, PasswordEncoder passwordEncoder) {
         this.userService = userService;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Operation(description = "Create new greeting", method = "POST")
@@ -100,6 +104,24 @@ public class UserController {
                     .body("Invalid or expired token.");
         }
     }
+
+    @Operation(description = "Login user")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Login successful"),
+            @ApiResponse(responseCode = "401", description = "Invalid username or password"),
+            @ApiResponse(responseCode = "500", description = "Login failed")
+    })
+    @PostMapping("/login")
+    public ResponseEntity<String> loginUser(@RequestBody UserLoginDto userLoginDto) {
+        User user = userService.findByUsername(userLoginDto.getUsername());
+
+        if (user != null && passwordEncoder.matches(userLoginDto.getPassword(), user.getPassword())) {
+            return ResponseEntity.ok("Login successful!");
+        } else {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid username or password");
+        }
+    }
+
 
 //    // Prikaz profila korisnika po username-u
 //    @GetMapping("/{username}")
