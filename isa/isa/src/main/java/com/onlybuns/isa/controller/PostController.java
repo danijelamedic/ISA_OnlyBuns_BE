@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 //@Tag(name="Post controller", description = "The post API")
 @RestController
@@ -38,7 +39,7 @@ public class PostController {
     private LocationService locationService;
 
     @Operation(description = "Get all posts", method = "GET")
-    @GetMapping
+    @GetMapping(value = "/getAll")
     public ResponseEntity<List<PostDto>> getPosts(){
         List<Post> posts = postService.findAll();
 
@@ -47,6 +48,28 @@ public class PostController {
 
             postsDtos.add(new PostDto(post));
         }
+        return new ResponseEntity<>(postsDtos, HttpStatus.OK);
+    }
+
+    @GetMapping
+    public ResponseEntity<List<PostDto>> getOrderedPosts() {
+        List<Post> posts = postService.findByOrder();
+
+        // Ako nema postova, možemo da vratimo 404 Not Found (ili prazan niz)
+        if (posts.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+
+        // Mapiranje Post objekata u PostDto objekte
+        List<PostDto> postsDtos = posts.stream()
+                .map(PostDto::new)
+                .collect(Collectors.toList());
+
+//        List<PostDto> postsDtos = new ArrayList<>();
+//        for (Post post : posts) {
+//
+//            postsDtos.add(new PostDto(post));
+//        }
         return new ResponseEntity<>(postsDtos, HttpStatus.OK);
     }
 

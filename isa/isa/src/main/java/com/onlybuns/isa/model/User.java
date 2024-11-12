@@ -17,6 +17,11 @@ public class User {
     private String name;
     private String surname;
     private String email;
+    private String address;
+    private String password;
+    private Role role;
+//    private String activationToken;
+//    private boolean activated;
 
     public User() {}
     public User(UserDto user){
@@ -29,14 +34,14 @@ public class User {
 
     // ... Getters and Setters ...
 
-    /*@OneToMany(mappedBy = "user", cascade = CascadeType.PERSIST)
-    private List<Post> posts = new ArrayList<>();  // Korisnik ima objave
+    @OneToMany(mappedBy = "user")
+    private List<Post> posts;  // Korisnik ima objave
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.PERSIST)
-    private List<Comment> comments = new ArrayList<>();  // Korisnik ima komentare
+    @OneToMany(mappedBy = "user")
+    private List<Comment> comments;  // Korisnik ima komentare
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.PERSIST)
-    private List<Like> likes = new ArrayList<>();*/
+    @OneToMany(mappedBy = "user")
+    private List<Like> likes;
 
     public Long getId(){
         return id;
@@ -73,11 +78,52 @@ public class User {
         this.name = name;
     }
 
-    /*public List<Post> getPosts() {
+    public List<Post> getPosts() {
         return posts;
     }
 
     public void setPosts(List<Post> posts) {
         this.posts = posts;
-    }*/
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+//    public String getActivationToken() {
+//        return activationToken;
+//    }
+//
+//    public void setActivationToken(String activationToken) {
+//        this.activationToken = activationToken;
+//    }
+//
+//    public boolean isActivated() {
+//        return activated;
+//    }
+//
+//    public void setActivated(boolean activated) {
+//        this.activated = activated;
+//    }
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
+    }
 }
+
+

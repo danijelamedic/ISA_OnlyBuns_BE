@@ -23,6 +23,11 @@ public class PostService {
         return postRepository.findById(id).get();
     }
 
+    // Metoda za pronalaženje svih objava
+    public List<Post> findByOrder() {
+        return postRepository.findAllByOrderByCreationTimeDesc(); // Poziva findAll metodu iz repository-a koja vraća sve objave
+    }
+
     public Post save(Post post) {
         return postRepository.save(post);
     }
