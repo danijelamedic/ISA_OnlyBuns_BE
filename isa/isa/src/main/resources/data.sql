@@ -16,12 +16,12 @@ insert into locations (id, latitude, longitude, address) values (4, 42.6611, 21.
 insert into locations (id, latitude, longitude, address) values (5, 46.0511, 14.5051, 'Ljubljana, Slovenija');
 
 
-insert into public.posts (creation_time, id, location_id, user_id, description, image_path) values ('2024-11-10 10:00:00', 1, 1, 7, 'Post description for Bojana', 'path/to/image1.jpg');
-insert into public.posts (creation_time, id, location_id, user_id, description, image_path) values ('2024-11-10 11:00:00', 2, 2, 8, 'Post description for Milana', 'path/to/image2.jpg');
-insert into public.posts (creation_time, id, location_id, user_id, description, image_path) values ('2024-11-10 12:00:00', 3, 3, 9, 'Post description for Jovana', 'path/to/image3.jpg');
-insert into public.posts (creation_time, id, location_id, user_id, description, image_path) values ('2024-11-10 13:00:00', 4, 4, 7, 'Post description for Bojana 2', 'path/to/image4.jpg');
-insert into public.posts (creation_time, id, location_id, user_id, description, image_path) values ('2024-11-10 14:00:00', 5, 5, 6, 'Post description for Zoran', 'path/to/image5.jpg');
-insert into public.posts (creation_time, id, location_id, user_id, description, image_path) values ('2024-11-10 15:00:00', 6, 1, 5, 'Post description for Pera', 'path/to/image6.jpg');
+insert into public.posts (creation_time, id, location_id, user_id, description, image_path) values ('2024-11-10 10:00:00', 1, 1, 7, 'Post description for Bojana', '/images/bunny1.jpeg');
+insert into public.posts (creation_time, id, location_id, user_id, description, image_path) values ('2024-11-10 11:00:00', 2, 2, 8, 'Post description for Milana', '/images/bunny2.jpg');
+insert into public.posts (creation_time, id, location_id, user_id, description, image_path) values ('2024-11-10 12:00:00', 3, 3, 9, 'Post description for Jovana', '/images/bunny3.jpg');
+insert into public.posts (creation_time, id, location_id, user_id, description, image_path) values ('2024-11-10 13:00:00', 4, 4, 7, 'Post description for Bojana 2', '/images/bunny4.jpg');
+insert into public.posts (creation_time, id, location_id, user_id, description, image_path) values ('2024-11-10 14:00:00', 5, 5, 6, 'Post description for Zoran', '/images/bunny5.jpg');
+insert into public.posts (creation_time, id, location_id, user_id, description, image_path) values ('2024-11-10 15:00:00', 6, 1, 5, 'Post description for Pera', '/images/bunny6.jpg');
 
 insert into public.likes (id, post_id, user_id) values (1, 1, 8);
 insert into public.likes (id, post_id, user_id) values (2, 2, 9);

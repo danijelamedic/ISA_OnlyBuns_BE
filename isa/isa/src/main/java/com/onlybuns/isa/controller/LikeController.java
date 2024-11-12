@@ -7,16 +7,17 @@ import com.onlybuns.isa.model.User;
 import com.onlybuns.isa.service.LikeService;
 import com.onlybuns.isa.service.PostService;
 import com.onlybuns.isa.service.UserService;
-import io.swagger.v3.oas.annotations.tags.Tag;
+//import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@Tag(name="Likes controller", description = "The like API")
+//@Tag(name="Likes controller", description = "The like API")
 @RestController
 @RequestMapping("/api/like")
 public class LikeController {
@@ -39,16 +40,25 @@ public class LikeController {
         return new ResponseEntity<>(likesDto, HttpStatus.OK);
     }
 
-    /*@PostMapping(consumes = "application/json")
+    @PostMapping(consumes = "application/json")
     public ResponseEntity<LikeDto> createLike(@RequestBody LikeDto likeDto){
-        Post post = postService.findById(likeDto.getPostId());
-        Like like = new Like();
-        like.setPost(post);
-        User user = userService.findById(likeDto.getUserId());
-        like.setUser(user);
-        like = likeService.save(like);
+        if(likeDto.getPost() == null || likeDto.getUser() == null){
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        Post post = postService.findById(likeDto.getPost().getId());
+        User user = userService.findById(likeDto.getUser().getId());
 
-        LikeDto createdLikeDto = new LikeDto(like);
-        return new ResponseEntity<>(createdLikeDto, HttpStatus.CREATED);
-    }*/
+        if(post == null || user == null){
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
+        Like like = new Like();
+        like.setUser(user);
+        like.setPost(post);
+
+        like = likeService.save(like);
+        post.addLike(like);
+        postService.save(post);
+        return new ResponseEntity<>(new LikeDto(like), HttpStatus.CREATED);
+    }
 }

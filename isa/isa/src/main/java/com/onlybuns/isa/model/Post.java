@@ -3,10 +3,9 @@ package com.onlybuns.isa.model;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name="posts")
@@ -29,9 +28,9 @@ public class Post {
     private LocalDateTime creationTime;
 
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
-    private List<Like> likes;
+    private Set<Like> likes = new HashSet<Like>();
 
-    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "post", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Comment> comments;
 
     public Post() {}
@@ -84,11 +83,11 @@ public class Post {
         this.creationTime = creationTime;
     }
 
-    public List<Like> getLikes() {
+    public Set<Like> getLikes() {
         return likes;
     }
 
-    public void setLikes(List<Like> likes) {
+    public void setLikes(Set<Like> likes) {
         this.likes = likes;
     }
 
@@ -106,6 +105,11 @@ public class Post {
 
     public int getCommentsCount() {
         return (comments != null) ? comments.size() : 0;
+    }
+
+    public void addLike(Like like){
+        likes.add(like);
+        like.setPost(this);
     }
 
     // NIKOLINO ZAKOMENTARISANO:

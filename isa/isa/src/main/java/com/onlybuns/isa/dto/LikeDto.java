@@ -1,20 +1,21 @@
 package com.onlybuns.isa.dto;
 
 import com.onlybuns.isa.model.Like;
+import com.onlybuns.isa.model.Post;
 import com.onlybuns.isa.model.User;
 
 public class LikeDto {
     private Long id;
-    private Long userId;
-    private Long postId;
+    private UserDto user;
+    private PostDto post;
 
     public LikeDto() {}
 
     public LikeDto(Like like){
         super();
         this.id = like.getId();
-        this.userId = like.getUser().getId();
-        this.postId = like.getPost().getId();
+        this.user = new UserDto(like.getUser());
+        this.post = new PostDto(like.getPost());
     }
 
     public Long getId() {
@@ -25,19 +26,19 @@ public class LikeDto {
         this.id = id;
     }
 
-    public Long getUserId() {
-        return userId;
+    public UserDto getUser() {
+        return user;
     }
 
-    public void setUserId(Long userId) {
-        this.userId = userId;
+    public void setUser(UserDto user) {
+        this.user = user;
     }
 
-    public Long getPostId() {
-        return postId;
+    public PostDto getPost() {
+        return post;
     }
 
-    public void setPostId(Long postId) {
-        this.postId = postId;
+    public void setPost(PostDto post) {
+        this.post = post;
     }
 }

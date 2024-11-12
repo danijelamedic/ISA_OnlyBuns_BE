@@ -11,11 +11,11 @@ public class Like {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "userId", nullable = false)
+    @JoinColumn(name = "userId", referencedColumnName = "id", nullable = false)
     private User user;
 
-    @ManyToOne
-    @JoinColumn(name = "postId", nullable = false)
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "postId", referencedColumnName = "id", nullable = false)
     private Post post;
 
     public Like() {}
