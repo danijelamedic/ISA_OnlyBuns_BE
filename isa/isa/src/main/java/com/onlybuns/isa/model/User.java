@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 
 import java.util.List;
 
+
 @Entity
 @Table(name="users")
 public class User {
@@ -18,6 +19,9 @@ public class User {
     private String email;
     private String address;
     private String password;
+    private Role role;
+//    private String activationToken;
+//    private boolean activated;
 
     public User() {}
     public User(UserDto user){
@@ -95,6 +99,29 @@ public class User {
         this.address = address;
     }
 
+//    public String getActivationToken() {
+//        return activationToken;
+//    }
+//
+//    public void setActivationToken(String activationToken) {
+//        this.activationToken = activationToken;
+//    }
+//
+//    public boolean isActivated() {
+//        return activated;
+//    }
+//
+//    public void setActivated(boolean activated) {
+//        this.activated = activated;
+//    }
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
+    }
 }
 
 

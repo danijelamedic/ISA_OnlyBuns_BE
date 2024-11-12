@@ -81,7 +81,25 @@ public class UserController {
                     .body("Registration failed: " + e.getMessage());
         }
     }
+    @Operation(description = "Activate user account")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "User activated successfully",
+                    content = @Content(mediaType = "text/plain")),
+            @ApiResponse(responseCode = "400", description = "Invalid or expired token",
+                    content = @Content)
+    })
+    @GetMapping("/activate")
+    public ResponseEntity<String> activateUser(@RequestParam("token") String token) {
+        //boolean isActivated = userService.activateUser(token);
 
+        boolean isActivated = true;
+        if (isActivated) {
+            return ResponseEntity.ok("User activated successfully.");
+        } else {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body("Invalid or expired token.");
+        }
+    }
 
 //    // Prikaz profila korisnika po username-u
 //    @GetMapping("/{username}")

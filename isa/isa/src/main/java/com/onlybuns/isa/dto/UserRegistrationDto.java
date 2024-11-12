@@ -1,5 +1,6 @@
 package com.onlybuns.isa.dto;
 
+import com.onlybuns.isa.model.Role;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -28,6 +29,9 @@ public class UserRegistrationDto {
     private String surname;
     @NotBlank(message = "Address is required")
     private String address;
+
+
+    private Role role = Role.REGISTERED_USER;
 
     // Getteri i setteri
 
@@ -86,5 +90,13 @@ public class UserRegistrationDto {
 
     public void setEmail(@NotBlank @Email String email) {
         this.email = email;
+    }
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
     }
 }
