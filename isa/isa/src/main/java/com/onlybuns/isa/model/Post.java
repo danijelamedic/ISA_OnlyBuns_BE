@@ -1,12 +1,12 @@
 package com.onlybuns.isa.model;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
-import com.onlybuns.isa.dto.PostDto;
+import java.util.Set;
 
 @Entity
 @Table(name="posts")
@@ -15,36 +15,38 @@ public class Post {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @JsonBackReference
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    private User user;
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH})
+    @JoinTable(name = "posting", joinColumns =  @JoinColumn(name = "user_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "post_id", referencedColumnName =  "id"))
+    private Set<User> users = new HashSet<User>();
 
     private String description;
     private String imagePath; // Putanja do slike zeca
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name="location_id")
     private Location location; // Lokacija objave sa koordinatama ili adresom
 
     private LocalDateTime creationTime;
 
-    @OneToMany(mappedBy = "post")
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
     private List<Like> likes;
 
-    @OneToMany(mappedBy = "post")
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
     private List<Comment> comments;
 
-    public Post() {}
-
-    public Post(PostDto postDto, User user, Location location) {
-        this.user = user;  // Postavljamo korisnika iz servisa
-        this.description = postDto.getDescription();
-        this.imagePath = postDto.getImagePath();
-        this.location = location;  // Postavljamo lokaciju iz servisa
-        this.creationTime = LocalDateTime.now();  // Postavlja trenutno vreme kao vreme kreiranja
+    public Post() {
+        this.likes = new ArrayList<>();
+        this.comments = new ArrayList<>();
     }
 
+    public Post(String description, String imagePath, Location location) {
+        this.description = description;
+        this.imagePath = imagePath;
+        this.location = location;
+        this.creationTime = LocalDateTime.now();
+        this.likes = new ArrayList<>();
+        this.comments = new ArrayList<>();
+    }
 
     public Long getId() {
         return id;
@@ -54,12 +56,12 @@ public class Post {
         this.id = id;
     }
 
-    public User getUser() {
-        return user;
+    public Set<User> getUsers() {
+        return users;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setUsers(Set<User> users) {
+        this.users = users;
     }
 
     public String getDescription() {
@@ -119,5 +121,85 @@ public class Post {
     }
 
     // NIKOLINO ZAKOMENTARISANO:
+
+   /* public Post(String description, String imagePath, Location location) {
+        this.description = description;
+        this.imagePath = imagePath;
+        this.location = location;
+        this.creationTime = LocalDateTime.now();
+        this.likesCount = 0;
+        this.comments = new ArrayList<>();
+    }
+
+    // Getters i Setters
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getImagePath() {
+        return imagePath;
+    }
+
+    public void setImagePath(String imagePath) {
+        this.imagePath = imagePath;
+    }
+
+    public Location getLocation() {
+        return location;
+    }
+
+    public void setLocation(Location location) {
+        this.location = location;
+    }
+
+    public LocalDateTime getCreationTime() {
+        return creationTime;
+    }
+
+    public void setCreationTime(LocalDateTime creationTime) {
+        this.creationTime = creationTime;
+    }
+
+    public int getLikesCount() {
+        return likesCount;
+    }
+
+    public void incrementLikes() {
+        this.likesCount++;
+    }
+
+    public List<Comment> getComments() {
+        return comments;
+    }
+
+    public void addComment(Comment comment) {
+        this.comments.add(comment);
+    }
+
+
+    @Override
+    public String toString() {
+        return "Post{" +
+                "id=" + id +
+                ", description='" + description + '\'' +
+                ", imagePath='" + imagePath + '\'' +
+                ", location=" + location +
+                ", creationTime=" + creationTime +
+                ", likesCount=" + likesCount +
+                ", comments=" + comments +
+                '}';
+    }*/
 
 }

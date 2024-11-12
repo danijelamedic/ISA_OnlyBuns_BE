@@ -32,4 +32,3 @@ public class AdminController {
         return "adminUsers";
     }
 }
-

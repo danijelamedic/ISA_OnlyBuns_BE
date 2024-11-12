@@ -2,40 +2,64 @@ package com.onlybuns.isa.controller;
 
 import com.onlybuns.isa.dto.CommentDto;
 import com.onlybuns.isa.dto.PostDto;
-import com.onlybuns.isa.dto.UserDto;
 import com.onlybuns.isa.model.Comment;
 import com.onlybuns.isa.model.Post;
 import com.onlybuns.isa.model.User;
 import com.onlybuns.isa.service.LikeService;
+import com.onlybuns.isa.service.LocationService;
 import com.onlybuns.isa.service.PostService;
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.Schema;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import com.onlybuns.isa.service.UserService;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.persistence.EntityNotFoundException;
-import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@Tag(name="Post controller", description = "The post API")
 @RestController
-@RequestMapping("/api/posts")
+@RequestMapping(value = "/api/posts")
 public class PostController {
     @Autowired
     private PostService postService;
     @Autowired
     private LikeService likeService;
+    @Autowired
+    private LocationService locationService;
+    @Autowired
+    private UserService userService;
+
+    @PostMapping(consumes = "application/json")
+    public ResponseEntity<PostDto> createPost(@RequestBody PostDto postDto) {
+        if(postDto.getUser() == null)
+        {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
+        User user = userService.findOneWithPosts(postDto.getUser().getId());
+
+        if(user == null)
+        {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
+        Post post = new Post();
+        post.setCreationTime(postDto.getCreationTime());
+        post.setDescription(postDto.getDescription());
+        post.setImagePath(postDto.getImagePath());
+        post.setLikes(new ArrayList<>());  // Postavlja praznu listu lajkova
+        post.setComments(new ArrayList<>());
+        post.setUser(user);
+        post.setLocation(locationService.findById(postDto.getLocation().getId()));
+        user.addPost(post);
+
+        post = postService.save(post);
+        return new ResponseEntity<>(new PostDto(post), HttpStatus.CREATED);
+    }
 
     @GetMapping
-    public ResponseEntity<List<PostDto>> getPosts() {
+    public ResponseEntity<List<PostDto>> getPosts(){
         List<Post> posts = postService.findAll();
 
         List<PostDto> postsDtos = new ArrayList<>();
@@ -46,22 +70,54 @@ public class PostController {
         return new ResponseEntity<>(postsDtos, HttpStatus.OK);
     }
 
-    @Operation(description = "Create new post", method = "POST")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "201", description = "Created",
-                    content = { @Content(mediaType = "application/json", schema = @Schema(implementation = Post.class)) }),
-            @ApiResponse(responseCode = "409", description = "Not possible to create new post when given id is not null or empty",
-                    content = @Content)
-    })
-    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Post> createPost(@Valid @RequestBody PostDto postDto) {
+    @GetMapping(value = "/{postId}")
+    public ResponseEntity<PostDto> getPostById(@PathVariable Long postId){
+        Post post = postService.findOne(postId);
+        PostDto postDto = new PostDto(post);
+        return new ResponseEntity<>(postDto, HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/getLikes/{postId}")
+    public int getLikesNumber(@PathVariable Long postId){
+        Post post = postService.findOne(postId);
+        return post.getLikes().size();
+    }
+
+    @GetMapping(value = "/getComments/{postId}")
+    public ResponseEntity<List<CommentDto>> getComments(@PathVariable Long postId){
+        Post post = postService.findOne(postId);
+        List<Comment> comments = post.getComments();
+        List<CommentDto> commentsDtos = new ArrayList<>();
+        for (Comment comment : comments) {
+            commentsDtos.add(new CommentDto(comment));
+        }
+        return new ResponseEntity<>(commentsDtos, HttpStatus.OK);
+    }
+
+    @PutMapping(consumes = "application/json")
+    public ResponseEntity<PostDto> updatePost(@RequestBody PostDto postDto){
+        Post post = postService.findOne(postDto.getId());
+        if (post == null) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        if(postDto.getDescription() != null)
+            post.setDescription(postDto.getDescription());
+        if(postDto.getImagePath() != null)
+            post.setImagePath(postDto.getImagePath());
+        post = postService.save(post);
+        return new ResponseEntity<>(new PostDto(post), HttpStatus.OK);
+    }
+
+    @DeleteMapping(value = "/{postId}")
+    public ResponseEntity<Void> deletePost(@PathVariable Long postId){
         try {
-            Post savedPost = postService.create(postDto);
-            return new ResponseEntity<>(savedPost, HttpStatus.CREATED);
-        } catch (EntityNotFoundException e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);  // handle not found exceptions
+            Post post = postService.findOne(postId);
+            postService.deleteById(postId);
+            return new ResponseEntity<>(HttpStatus.OK);
         } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.CONFLICT);  // handle generic errors
+            // Log error for debugging
+            System.out.println("Error deleting post: " + e.getMessage());
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
 }
