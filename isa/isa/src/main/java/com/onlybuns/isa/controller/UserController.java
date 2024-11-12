@@ -22,6 +22,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.validation.annotation.Validated;
 
+import java.util.ArrayList;
+import java.util.List;
+
 // http://localhost:8080/swagger-ui/index.html
 
 @Tag(name="User controller", description = "The user API")
@@ -120,6 +123,7 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid username or password");
         }
     }
+
 
 
 //    // Prikaz profila korisnika po username-u

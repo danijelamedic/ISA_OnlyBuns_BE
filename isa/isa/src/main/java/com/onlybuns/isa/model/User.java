@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name="users")
@@ -35,7 +36,7 @@ public class User {
     // ... Getters and Setters ...
 
     @OneToMany(mappedBy = "user")
-    private List<Post> posts;  // Korisnik ima objave
+    private Set<Post> posts;  // Korisnik ima objave
 
     @OneToMany(mappedBy = "user")
     private List<Comment> comments;  // Korisnik ima komentare
@@ -78,11 +79,11 @@ public class User {
         this.name = name;
     }
 
-    public List<Post> getPosts() {
+    public Set<Post> getPosts() {
         return posts;
     }
 
-    public void setPosts(List<Post> posts) {
+    public void setPosts(Set<Post> posts) {
         this.posts = posts;
     }
 

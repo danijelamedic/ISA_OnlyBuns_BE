@@ -13,6 +13,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.UUID;
 //import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
@@ -98,5 +99,25 @@ public class UserService {
 //        return userRepository.findByUsername(username)
 //                .orElseThrow(() -> new UsernameNotFoundException("User not found with username: " + username));
 //    }
+
+    public List<User> findAll(){
+        return userRepository.findAll();
+    }
+
+    public List<User> findByName(String name){
+        return userRepository.findByName(name);
+    }
+    public List<User> findBySurname(String surname){
+        return userRepository.findBySurname(surname);
+    }
+    public User findByEmail(String email){
+        return userRepository.findByEmail(email);
+    }
+    public List<User> findByPostsNumber(int min, int max){
+        return userRepository.findByPostsNumber(min, max);
+    }
+    public List<User> sortByEmail(){
+        return userRepository.findAllByOrderByEmailAsc();
+    }
 
 }
