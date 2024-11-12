@@ -1,6 +1,7 @@
 package com.onlybuns.isa.controller;
 
 import com.onlybuns.isa.dto.UserDto;
+import com.onlybuns.isa.dto.UserRegistrationDto;
 import com.onlybuns.isa.model.User;
 import com.onlybuns.isa.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -9,11 +10,13 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 // http://localhost:8080/swagger-ui/index.html
@@ -21,10 +24,16 @@ import org.springframework.web.bind.annotation.*;
 @Tag(name="User controller", description = "The user API")
 @RestController
 @RequestMapping("/api/users")
+@Validated
 public class UserController {
 
-    @Autowired
+
     private UserService userService;
+
+    @Autowired
+    public UserController(UserService userService) {
+        this.userService = userService;
+    }
 
     @Operation(description = "Create new greeting", method = "POST")
     @ApiResponses(value = {
@@ -44,14 +53,40 @@ public class UserController {
         }
     }
 
-    @Autowired
-    public UserController(UserService userService) {
-        this.userService = userService;
+
+    @Operation(description = "Register a new user")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "User registered successfully",
+                    content = @Content(mediaType = "text/plain")),
+            @ApiResponse(responseCode = "400", description = "Bad Request - Passwords do not match",
+                    content = @Content),
+            @ApiResponse(responseCode = "500", description = "Internal Server Error",
+                    content = @Content)
+    })
+    @PostMapping("/register")
+    public ResponseEntity<String> registerUser(@Valid @RequestBody UserRegistrationDto userRegistrationDto) {
+        // Proveri da li se password poklapa sa confirmPassword
+        if (!userRegistrationDto.getPassword().equals(userRegistrationDto.getConfirmPassword())) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body("Password and confirm password do not match.");
+        }
+
+        try {
+            // Pozivanje metode za registraciju
+            userService.registerUser(userRegistrationDto);
+            return ResponseEntity.status(HttpStatus.CREATED)
+                    .body("User registered successfully.");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Registration failed: " + e.getMessage());
+        }
     }
+
 
 //    // Prikaz profila korisnika po username-u
 //    @GetMapping("/{username}")
 //    public User getUserProfile(@PathVariable String username) {
 //        return userService.getUserByUsername(username);
 //    }
+
 }

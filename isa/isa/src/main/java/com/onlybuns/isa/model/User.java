@@ -16,6 +16,8 @@ public class User {
     private String name;
     private String surname;
     private String email;
+    private String address;
+    private String password;
 
     public User() {}
     public User(UserDto user){
@@ -77,4 +79,22 @@ public class User {
     public void setPosts(List<Post> posts) {
         this.posts = posts;
     }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
 }
+
+

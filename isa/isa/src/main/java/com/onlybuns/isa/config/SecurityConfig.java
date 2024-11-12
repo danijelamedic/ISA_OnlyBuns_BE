@@ -4,6 +4,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
@@ -15,9 +17,10 @@ public class SecurityConfig {
         http
                 .csrf(csrf -> csrf.disable()) // CSRF je onemogućen radi jednostavnijeg testiranja
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/posts/**").permitAll()  // Dozvoljeno svima
-                        .requestMatchers("/api/auth/**").permitAll()  // Omogućeno za registraciju i prijavu
-                        .anyRequest().authenticated()  // Sve ostalo zahteva prijavu
+                        .requestMatchers("/api/posts/**").permitAll()
+                        .requestMatchers("/api/auth/**").permitAll()
+                        .requestMatchers("/api/users", "/api/users/register").permitAll()  // Omogućeno za rute za korisnike
+                        .anyRequest().authenticated()
                 )
                 .formLogin(form -> form
                         .loginPage("/login")
@@ -27,4 +30,11 @@ public class SecurityConfig {
 
         return http.build();
     }
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+
+
 }
