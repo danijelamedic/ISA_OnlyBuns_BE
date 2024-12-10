@@ -1,18 +1,21 @@
-package com.onlybuns.isa.model;
+package com.onlybuns.isa.dto;
 
-import jakarta.persistence.*;
+import com.onlybuns.isa.model.Location;
 
-@Entity
-public class Location{
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class LocationDto {
     private Long id;
-
     private double latitude;
     private double longitude;
     private String address;
 
-    public Location() {}
+    public LocationDto() {}
+
+    public LocationDto(Location location) {
+        this.id = location.getId();
+        this.latitude = location.getLatitude();
+        this.longitude = location.getLongitude();
+        this.address = location.getAddress();
+    }
 
     public Long getId() {
         return id;
@@ -45,5 +48,4 @@ public class Location{
     public void setAddress(String address) {
         this.address = address;
     }
-
 }
