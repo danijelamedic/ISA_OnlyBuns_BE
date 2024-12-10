@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -19,6 +20,7 @@ import java.util.List;
 
 //@Tag(name="Likes controller", description = "The like API")
 @RestController
+@CrossOrigin(origins = "http://localhost:4200")
 @RequestMapping("/api/like")
 public class LikeController {
     @Autowired
@@ -40,13 +42,14 @@ public class LikeController {
         return new ResponseEntity<>(likesDto, HttpStatus.OK);
     }
 
+    @PreAuthorize("permitAll()")
     @PostMapping(consumes = "application/json")
     public ResponseEntity<LikeDto> createLike(@RequestBody LikeDto likeDto){
-        if(likeDto.getPost() == null || likeDto.getUser() == null){
+        if(likeDto.getPost() == 0 || likeDto.getUser() == 0){
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-        Post post = postService.findById(likeDto.getPost().getId());
-        User user = userService.findById(likeDto.getUser().getId());
+        Post post = postService.findById(likeDto.getPost());
+        User user = userService.findById(likeDto.getUser());
 
         if(post == null || user == null){
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);

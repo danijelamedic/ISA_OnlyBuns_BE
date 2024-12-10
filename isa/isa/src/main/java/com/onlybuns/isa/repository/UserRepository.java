@@ -12,9 +12,9 @@ import java.util.Optional;
 public interface UserRepository extends JpaRepository<User, Long> {
     public User findById(long id);
    // User create(User user);
-    public List<User> findByName(String name);
-    public List<User> findBySurname(String surname);
-    public User findByEmail(String email);
+    public List<User> findByNameContainingIgnoreCase(String name);
+    public List<User> findBySurnameContainingIgnoreCase(String surname);
+    public User findByEmailContainingIgnoreCase(String email);
     @Query("SELECT u FROM User u WHERE (SELECT COUNT(p) FROM Post p WHERE p.user = u) BETWEEN :min AND :max")
     public List<User> findByPostsNumber(@Param("min") int min, @Param("max") int max);
     public List<User> findAllByOrderByEmailAsc();

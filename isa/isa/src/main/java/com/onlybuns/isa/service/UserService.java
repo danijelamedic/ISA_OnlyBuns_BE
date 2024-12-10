@@ -105,13 +105,13 @@ public class UserService {
     }
 
     public List<User> findByName(String name){
-        return userRepository.findByName(name);
+        return userRepository.findByNameContainingIgnoreCase(name);
     }
     public List<User> findBySurname(String surname){
-        return userRepository.findBySurname(surname);
+        return userRepository.findBySurnameContainingIgnoreCase(surname);
     }
     public User findByEmail(String email){
-        return userRepository.findByEmail(email);
+        return userRepository.findByEmailContainingIgnoreCase(email);
     }
     public List<User> findByPostsNumber(int min, int max){
         return userRepository.findByPostsNumber(min, max);

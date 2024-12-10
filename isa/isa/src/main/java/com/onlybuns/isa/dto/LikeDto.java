@@ -6,16 +6,16 @@ import com.onlybuns.isa.model.User;
 
 public class LikeDto {
     private Long id;
-    private UserDto user;
-    private PostDto post;
+    private Long userId;
+    private Long postId;
 
     public LikeDto() {}
 
     public LikeDto(Like like){
         super();
         this.id = like.getId();
-        this.user = new UserDto(like.getUser());
-        this.post = new PostDto(like.getPost());
+        this.userId = like.getUser().getId();
+        this.postId = like.getPost().getId();
     }
 
     public Long getId() {
@@ -26,19 +26,19 @@ public class LikeDto {
         this.id = id;
     }
 
-    public UserDto getUser() {
-        return user;
+    public long getUser() {
+        return userId;
     }
 
-    public void setUser(UserDto user) {
-        this.user = user;
+    public void setUser(Long userId) {
+        this.userId = userId;
     }
 
-    public PostDto getPost() {
-        return post;
+    public long getPost() {
+        return postId;
     }
 
-    public void setPost(PostDto post) {
-        this.post = post;
+    public void setPost(Long postId) {
+        this.postId = postId;
     }
 }
