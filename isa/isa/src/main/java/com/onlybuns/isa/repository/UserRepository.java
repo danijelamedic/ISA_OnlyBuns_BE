@@ -2,6 +2,8 @@ package com.onlybuns.isa.repository;
 
 import com.onlybuns.isa.dto.UserDto;
 import com.onlybuns.isa.model.User;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -12,6 +14,7 @@ import java.util.Optional;
 public interface UserRepository extends JpaRepository<User, Long> {
     public User findById(long id);
    // User create(User user);
+    public Page<User> findAll(Pageable pageable);
     public List<User> findByNameContainingIgnoreCase(String name);
     public List<User> findBySurnameContainingIgnoreCase(String surname);
     public User findByEmailContainingIgnoreCase(String email);
@@ -21,5 +24,5 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     Optional<User> findByUsername(String username);
     //Optional<User> findByActivationToken(String activationToken);
-
+    public long count();
 }

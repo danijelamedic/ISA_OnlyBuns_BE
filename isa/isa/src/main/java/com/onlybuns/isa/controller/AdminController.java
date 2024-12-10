@@ -6,13 +6,11 @@ import com.onlybuns.isa.model.Post;
 import com.onlybuns.isa.model.User;
 import com.onlybuns.isa.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,8 +47,8 @@ public class AdminController {
     }
 
     @GetMapping("/users")
-    public ResponseEntity<List<UserDto>> viewUsers() {
-        List<User> users = userService.findAll();
+    public ResponseEntity<List<UserDto>> viewUsers(@RequestParam int page, @RequestParam int size) {
+        Page<User> users = userService.findAll(page, size);
 
         List<UserDto> usersDto = new ArrayList<>();
         for (User user : users) {
@@ -110,6 +108,11 @@ public class AdminController {
             userDtos.add(new UserDto(user));
         }
         return new ResponseEntity<>(userDtos, HttpStatus.OK);
+    }
+
+    @GetMapping("/users/count")
+    public long getTotalUsersCount() {
+        return userService.getTotalUsersCount();  // Pozivaš metodu koja vraća broj korisnika
     }
 }
 
