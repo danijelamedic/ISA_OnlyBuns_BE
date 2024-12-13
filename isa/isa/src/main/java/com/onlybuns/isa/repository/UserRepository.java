@@ -24,5 +24,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     Optional<User> findByUsername(String username);
     //Optional<User> findByActivationToken(String activationToken);
-    public long count();
+    long count();
+
 }

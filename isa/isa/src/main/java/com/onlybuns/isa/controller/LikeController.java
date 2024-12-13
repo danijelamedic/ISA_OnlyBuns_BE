@@ -42,14 +42,11 @@ public class LikeController {
         return new ResponseEntity<>(likesDto, HttpStatus.OK);
     }
 
-    @PreAuthorize("permitAll()")
-    @PostMapping(consumes = "application/json")
-    public ResponseEntity<LikeDto> createLike(@RequestBody LikeDto likeDto){
-        if(likeDto.getPost() == 0 || likeDto.getUser() == 0){
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
-        Post post = postService.findById(likeDto.getPost());
-        User user = userService.findById(likeDto.getUser());
+   // @PreAuthorize("permitAll()")
+    @PostMapping("/{postId}/{userId}")
+    public ResponseEntity<LikeDto> createLike(@PathVariable Long postId, @PathVariable Long userId){
+        Post post = postService.findById(postId);
+        User user = userService.findById(userId);
 
         if(post == null || user == null){
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);

@@ -111,8 +111,17 @@ public class AdminController {
     }
 
     @GetMapping("/users/count")
-    public long getTotalUsersCount() {
-        return userService.getTotalUsersCount();  // Pozivaš metodu koja vraća broj korisnika
+    public ResponseEntity<Long> getTotalUsersCount() {
+        try {
+            long count = userService.getTotalUsersCount();
+            return ResponseEntity.ok(count);  // Vraća broj korisnika kao Long
+        } catch (Exception e) {
+            // Vraća grešku u formatu String ako nešto pođe po zlu
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(null);  // Vraća null telo ako dođe do greške, ili možete ostaviti telo kao Long ako želite
+        }
     }
+
+
 }
 
