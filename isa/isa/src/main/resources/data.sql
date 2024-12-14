@@ -53,3 +53,17 @@ insert into comment (post_id, "timestamp", user_id, content) values (3, '2024-11
 insert into comment (post_id, "timestamp", user_id, content) values (1, '2024-11-10 10:20:00', 8, 'Thanks for sharing!');
 insert into comment (post_id, "timestamp", user_id, content) values (2, '2024-11-10 11:25:00', 9, 'Really cool!');
 insert into comment (post_id, "timestamp", user_id, content) values (3, '2024-11-10 12:20:00', 7, 'Very helpful!');
+
+
+
+insert into follower(user_id, followed_user_id) values (1, 2);
+insert into follower(user_id, followed_user_id) values (1, 3);
+insert into follower(user_id, followed_user_id) values (1, 4);
+insert into follower(user_id, followed_user_id) values (1, 5);
+insert into follower(user_id, followed_user_id) values (3, 2);
+insert into follower(user_id, followed_user_id) values (3, 7);
+insert into follower(user_id, followed_user_id) values (4, 2);
+insert into follower(user_id, followed_user_id) values (5, 2);
+insert into follower(user_id, followed_user_id) values (6, 2);
+insert into follower(user_id, followed_user_id) values (7, 2);
+insert into follower(user_id, followed_user_id) values (8, 2);
