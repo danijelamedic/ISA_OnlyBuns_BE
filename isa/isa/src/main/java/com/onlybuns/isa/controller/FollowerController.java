@@ -48,6 +48,10 @@ public class FollowerController {
 
     @PostMapping("/{userId}/{followedUserId}")
     public ResponseEntity<FollowerDto> create(@PathVariable Long userId, @PathVariable Long followedUserId) {
+        if (!followerService.canFollow(userId)) {
+            FollowerDto dto = new FollowerDto("Too many requests. Please try again later.");
+            return ResponseEntity.status(429).body(dto);
+        }
         User user = userService.findById(userId);
         User followedUser = userService.findById(followedUserId);
 

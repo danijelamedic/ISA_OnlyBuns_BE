@@ -3,13 +3,17 @@ package com.onlybuns.isa.service;
 import com.onlybuns.isa.dto.UserDto;
 import com.onlybuns.isa.model.Follower;
 import com.onlybuns.isa.model.User;
+import com.onlybuns.isa.model.UserAction;
 import com.onlybuns.isa.repository.FollowerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.concurrent.ConcurrentHashMap;
 
 @Service
 public class FollowerService {
@@ -17,6 +21,9 @@ public class FollowerService {
     private FollowerRepository followerRepository;
     @Autowired
     private UserService userService;
+
+    private final Map<Long, UserAction> userActions = new ConcurrentHashMap<>();
+    private final int MAX_ACTIONS_PER_MINUTE = 50;
 
     public List<Follower> findByUserId(Long userId) { return followerRepository.findByUserId(userId); }
     public List<Follower> findByFollowerId(Long followerId) { return followerRepository.findByFollowedUserId(followerId); }
@@ -37,4 +44,24 @@ public class FollowerService {
         }
         return userDtos;
     }
+
+    public boolean canFollow(long userId) {
+        Instant now = Instant.now();
+        UserAction userAction = userActions.getOrDefault(userId, new UserAction(now, 0));
+
+        if (now.minusSeconds(60).isAfter(userAction.getLastActionTime())) {
+
+            userAction.setLastActionTime(now);
+            userAction.setActionCount(0);
+        }
+
+        if (userAction.getActionCount() < MAX_ACTIONS_PER_MINUTE) {
+            userAction.incrementActionCount();
+            userActions.put(userId, userAction);
+            return true;
+        }
+
+        return false;
+    }
+
 }
