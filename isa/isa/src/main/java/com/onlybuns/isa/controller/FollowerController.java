@@ -93,17 +93,9 @@ public class FollowerController {
 
     @GetMapping("/getFollowingUsers/{userId}")
     public ResponseEntity<List<UserDto>> getFollowingUsers(@PathVariable Long userId) {
-        User user = userService.findById(userId);
-        List<Follower> followers = followerService.findByUserId(user.getId());  // dobavlja po user - oni koje user prati
-        List<User> followingUsers = new ArrayList<>();
-        for (Follower follower : followers) {
-            followingUsers.add(follower.getFollowedUser());     // dobavlja id onih koje user prati, tj followedUsers
+        if(followerService.findFollowedUsers(userId) == null){
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-        List<UserDto> userDtos = new ArrayList<>();
-        for (User followingUser : followingUsers) {
-            userDtos.add(new UserDto(followingUser));
-        }
-        return new ResponseEntity<>(userDtos, HttpStatus.OK);
+        return new ResponseEntity<>(followerService.findFollowedUsers(userId), HttpStatus.OK);
     }
-
 }

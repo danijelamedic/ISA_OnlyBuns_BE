@@ -22,6 +22,8 @@ insert into post (creation_time, location_id, user_id, description, image_path) 
 insert into post (creation_time, location_id, user_id, description, image_path) values ('2024-11-10 13:00:00', 4, 7, 'Post description for Bojana 2', '/images/bunny4.jpg');
 insert into post (creation_time, location_id, user_id, description, image_path) values ('2024-11-10 14:00:00', 5, 6, 'Post description for Zoran', '/images/bunny5.jpg');
 insert into post (creation_time, location_id, user_id, description, image_path) values ('2024-11-10 15:00:00', 1, 5, 'Post description for Pera', '/images/bunny6.jpg');
+insert into post (creation_time, location_id, user_id, description, image_path) values ('2024-11-10 15:00:00', 1, 2, 'Post description for Milan', '/images/bunny1.jpeg');
+insert into post (creation_time, location_id, user_id, description, image_path) values ('2024-11-10 15:00:00', 1, 3, 'Post description for Ivana', '/images/bunny2.jpg');
 
 insert into likes (post_id, user_id) values (1, 8);
 insert into likes (post_id, user_id) values (2, 9);
