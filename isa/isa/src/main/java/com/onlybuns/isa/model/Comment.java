@@ -18,7 +18,7 @@ public class Comment{
     private User user;
 
     private String content;
-    private LocalDateTime timestamp;
+    private LocalDateTime creationTime;
 
     public Comment() {}
 
@@ -54,12 +54,12 @@ public class Comment{
         this.content = content;
     }
 
-    public LocalDateTime getTimestamp() {
-        return timestamp;
+    public LocalDateTime getCreationTime() {
+        return creationTime;
     }
 
-    public void setTimestamp(LocalDateTime timestamp) {
-        this.timestamp = timestamp;
+    public void setCreationTime(LocalDateTime creationTime) {
+        this.creationTime = creationTime;
     }
 
 

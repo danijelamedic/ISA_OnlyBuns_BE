@@ -39,4 +39,8 @@ public class PostService {
     public List<Post> findByUserId(Long userId) {
         return postRepository.findByUserId(userId);
     }
+
+    public int countPostsPerMonth(int month, int year){ return postRepository.countPerMonth(month,year);}
+    public int countPostsPerWeek(int week, int year){ return postRepository.countPerWeek(week,year);}
+    public int countPostsPerYear(int year){ return postRepository.countPerYear(year);}
 }
