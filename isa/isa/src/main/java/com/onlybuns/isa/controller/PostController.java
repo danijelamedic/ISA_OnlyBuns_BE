@@ -3,8 +3,10 @@ package com.onlybuns.isa.controller;
 import com.onlybuns.isa.dto.CommentDto;
 import com.onlybuns.isa.dto.PostDto;
 import com.onlybuns.isa.dto.UpdatePostDto;
+import com.onlybuns.isa.dto.UserDto;
 import com.onlybuns.isa.model.Comment;
 import com.onlybuns.isa.model.Post;
+import com.onlybuns.isa.service.FollowerService;
 import com.onlybuns.isa.service.LikeService;
 import com.onlybuns.isa.service.LocationService;
 import com.onlybuns.isa.service.PostService;
@@ -37,6 +39,8 @@ public class PostController {
     private LikeService likeService;
     @Autowired
     private LocationService locationService;
+    @Autowired
+    private FollowerService followerService;
 
     @Operation(description = "Get all posts", method = "GET")
     @GetMapping(value = "/getAll")
@@ -175,6 +179,19 @@ public class PostController {
         for (Post post : posts) {
 
             postsDtos.add(new PostDto(post));
+        }
+        return new ResponseEntity<>(postsDtos, HttpStatus.OK);
+    }
+
+    @GetMapping(value="getFollowing/{userId}")
+    public ResponseEntity<List<PostDto>> getFollowing(@PathVariable Long userId){
+        List<UserDto> following = followerService.findFollowedUsers(userId);
+        List<PostDto> postsDtos = new ArrayList<>();
+        for (UserDto userDto : following) {
+            List<Post> usersPost = postService.findByUserId(userDto.getId());
+            for (Post post : usersPost) {
+                postsDtos.add(new PostDto(post));
+            }
         }
         return new ResponseEntity<>(postsDtos, HttpStatus.OK);
     }

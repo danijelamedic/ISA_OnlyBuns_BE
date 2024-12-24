@@ -9,6 +9,9 @@ import com.onlybuns.isa.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -100,8 +103,10 @@ public class UserService {
 //                .orElseThrow(() -> new UsernameNotFoundException("User not found with username: " + username));
 //    }
 
-    public List<User> findAll(){
-        return userRepository.findAll();
+    public Page<User> findAll(int page, int size)
+    {
+        Pageable pageable = PageRequest.of(page, size);
+        return userRepository.findAll(pageable);
     }
 
     public List<User> findByName(String name){
@@ -120,4 +125,7 @@ public class UserService {
         return userRepository.findAllByOrderByEmailAsc();
     }
 
+    public long getTotalUsersCount(){
+        return userRepository.count();
+    }
 }

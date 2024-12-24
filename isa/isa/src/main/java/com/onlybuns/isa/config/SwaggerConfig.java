@@ -1,3 +1,4 @@
+/*
 package com.onlybuns.isa.config;
 
 import org.springframework.context.annotation.Bean;
@@ -17,3 +18,4 @@ public class SwaggerConfig implements WebMvcConfigurer {
                 .allowedHeaders("*");  // Omogući sve zaglavlja
     }
 }
+*/
