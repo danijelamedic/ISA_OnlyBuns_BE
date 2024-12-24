@@ -128,7 +128,7 @@ public class AdminController {
     }
 
     @GetMapping("/getCommentsPerWeek/{week}/{year}")
-    public ResponseEntity<Integer> getCommentsPerWeek(int week, int year){
+    public ResponseEntity<Integer> getCommentsPerWeek(@PathVariable int week, @PathVariable int year){
         try{
             int result = commentService.countCommentsPerWeek(week, year);
             return ResponseEntity.ok(result);
@@ -138,7 +138,7 @@ public class AdminController {
     }
 
     @GetMapping("/getCommentsPerMonth/{month}/{year}")
-    public ResponseEntity<Integer> getCommentsPerMonth(int month, int year){
+    public ResponseEntity<Integer> getCommentsPerMonth(@PathVariable int month, @PathVariable int year){
         try{
             int result = commentService.countCommentsPerMonth(month, year);
             return ResponseEntity.ok(result);
@@ -148,7 +148,7 @@ public class AdminController {
     }
 
     @GetMapping("/getCommentsPerYear/{year}")
-    public ResponseEntity<Integer> getCommentsPerYear(int year){
+    public ResponseEntity<Integer> getCommentsPerYear(@PathVariable int year){
         try{
             int result = commentService.countCommentsPerYear(year);
             return ResponseEntity.ok(result);
@@ -159,7 +159,7 @@ public class AdminController {
 
 
     @GetMapping("/getPostsPerWeek/{week}/{year}")
-    public ResponseEntity<Integer> getPostsPerWeek(int week, int year){
+    public ResponseEntity<Integer> getPostsPerWeek(@PathVariable int week, @PathVariable int year){
         try{
             int result = postService.countPostsPerWeek(week, year);
             return ResponseEntity.ok(result);
@@ -169,7 +169,7 @@ public class AdminController {
     }
 
     @GetMapping("/getPostsPerMonth/{month}/{year}")
-    public ResponseEntity<Integer> getPostsPerMonth(int month, int year){
+    public ResponseEntity<Integer> getPostsPerMonth(@PathVariable int month, @PathVariable int year){
         try{
             int result = postService.countPostsPerMonth(month, year);
             return ResponseEntity.ok(result);
@@ -179,7 +179,7 @@ public class AdminController {
     }
 
     @GetMapping("/getPostsPerYear/{year}")
-    public ResponseEntity<Integer> getPostsPerYear(int year){
+    public ResponseEntity<Integer> getPostsPerYear(@PathVariable int year){
         try{
             int result = postService.countPostsPerYear(year);
             return ResponseEntity.ok(result);

@@ -44,7 +44,7 @@ insert into likes (post_id, user_id) values (4, 4);
 
 
 
-insert into comment (post_id, creation_time, user_id, content) values (1, '2024-11-10 10:05:00', 8, 'This is a comment');
+insert into comment (post_id, creation_time, user_id, content) values (1, '2024-10-10 10:05:00', 8, 'This is a comment');
 insert into comment (post_id, creation_time, user_id, content) values (2, '2024-11-10 11:05:00', 9, 'This is a comment');
 insert into comment (post_id, creation_time, user_id, content) values (3, '2024-11-10 12:05:00', 7, 'This is a comment');
 insert into comment (post_id, creation_time, user_id, content) values (1, '2024-11-10 10:10:00', 9, 'Great post!');

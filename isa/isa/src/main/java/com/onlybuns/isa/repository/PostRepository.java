@@ -14,12 +14,12 @@ public interface PostRepository extends JpaRepository<Post, Long> {
     List<Post> findByUserId(long id);
     List<Post> findAllByOrderByCreationTimeDesc();
 
-    @Query("SELECT COUNT(c) FROM Comment c WHERE MONTH(c.creationTime) = :month AND YEAR(c.creationTime) = :year")
+    @Query("SELECT COUNT(c) FROM Post c WHERE MONTH(c.creationTime) = :month AND YEAR(c.creationTime) = :year")
     int countPerMonth(@Param("month") int month, @Param("year") int year);
 
-    @Query("SELECT COUNT(c) FROM Comment c WHERE WEEK(c.creationTime) = :week AND YEAR(c.creationTime) = :year")
+    @Query("SELECT COUNT(c) FROM Post c WHERE WEEK(c.creationTime) = :week AND YEAR(c.creationTime) = :year")
     int countPerWeek(@Param("week") int week, @Param("year") int year);
 
-    @Query("SELECT COUNT(c) FROM Comment c WHERE YEAR(c.creationTime) = :year")
+    @Query("SELECT COUNT(c) FROM Post c WHERE YEAR(c.creationTime) = :year")
     int countPerYear(@Param("year") int year);
 }
