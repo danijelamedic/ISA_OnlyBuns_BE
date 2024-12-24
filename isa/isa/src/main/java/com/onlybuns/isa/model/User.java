@@ -51,6 +51,15 @@ public class User {
     @OneToMany(mappedBy = "user")
     private List<Like> likes;
 
+    public User(String johndoe, String john, String doe, String mail, String s, String password123, Role role) {
+        this.username = johndoe;
+        this.name = john;
+        this.surname = doe;
+        this.email = mail;
+        this.password = s;
+        this.role = role;
+    }
+
     public Long getId(){
         return id;
     }

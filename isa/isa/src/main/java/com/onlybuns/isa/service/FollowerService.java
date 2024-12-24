@@ -5,6 +5,11 @@ import com.onlybuns.isa.model.Follower;
 import com.onlybuns.isa.model.User;
 import com.onlybuns.isa.model.UserAction;
 import com.onlybuns.isa.repository.FollowerRepository;
+import io.github.resilience4j.ratelimiter.RequestNotPermitted;
+import io.github.resilience4j.ratelimiter.annotation.RateLimiter;
+import org.springframework.transaction.annotation.Transactional;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,8 +20,12 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 
+
 @Service
 public class FollowerService {
+    private final Logger LOG = LoggerFactory.getLogger(FollowerService.class);
+
+
     @Autowired
     private FollowerRepository followerRepository;
     @Autowired
@@ -27,6 +36,8 @@ public class FollowerService {
 
     public List<Follower> findByUserId(Long userId) { return followerRepository.findByUserId(userId); }
     public List<Follower> findByFollowerId(Long followerId) { return followerRepository.findByFollowedUserId(followerId); }
+    @RateLimiter(name = "standard", fallbackMethod = "standardFallback")
+    @Transactional(readOnly = false)
     public Follower follow(Follower follower) { return followerRepository.save(follower); }
     public void unfollow(Follower follower) { followerRepository.delete(follower);}
     public Follower findById(long id) { return followerRepository.findById(id); }
@@ -44,24 +55,23 @@ public class FollowerService {
         }
         return userDtos;
     }
-
-    public boolean canFollow(long userId) {
-        Instant now = Instant.now();
-        UserAction userAction = userActions.getOrDefault(userId, new UserAction(now, 0));
-
-        if (now.minusSeconds(60).isAfter(userAction.getLastActionTime())) {
-
-            userAction.setLastActionTime(now);
-            userAction.setActionCount(0);
-        }
-
-        if (userAction.getActionCount() < MAX_ACTIONS_PER_MINUTE) {
-            userAction.incrementActionCount();
-            userActions.put(userId, userAction);
-            return true;
-        }
-
-        return false;
+    // Metoda koja ce se pozvati u slucaju RequestNotPermitted exception-a
+    public Follower standardFallback(RequestNotPermitted rnp) {
+        LOG.warn("Prevazidjen broj poziva u ogranicenom vremenskom intervalu");
+        throw rnp;
     }
+
+    public void testRateLimiter() {
+        for (int i = 0; i < 5; i++) {
+            try {
+                Follower follower = new Follower(); // Primer objekta
+                this.follow(follower);
+                System.out.println("Request " + (i + 1) + ": SUCCESS");
+            } catch (RequestNotPermitted e) {
+                System.out.println("Request " + (i + 1) + ": RATE LIMITED");
+            }
+        }
+    }
+
 
 }

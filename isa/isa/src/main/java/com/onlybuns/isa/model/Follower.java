@@ -16,6 +16,9 @@ public class Follower {
     @JoinColumn(name = "followed_user_id", nullable = false)
     private User followedUser;
 
+    @Version
+    private Integer version;
+
     public User getUser() {
         return user;
     }
@@ -39,4 +42,18 @@ public class Follower {
     public void setFollowedUser(User followedUser) {
         this.followedUser = followedUser;
     }
+
+    public Integer getVersion() {
+        return version;
+    }
+
+    public void setVersion(Integer version) {
+        this.version = version;
+    }
+
+    public Follower(User user, User followedUser) {
+        this.user = user;
+        this.followedUser = followedUser;
+    }
+    public Follower() {}
 }

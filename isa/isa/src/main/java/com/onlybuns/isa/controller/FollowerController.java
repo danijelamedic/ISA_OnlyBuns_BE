@@ -6,6 +6,7 @@ import com.onlybuns.isa.model.Follower;
 import com.onlybuns.isa.model.User;
 import com.onlybuns.isa.service.FollowerService;
 import com.onlybuns.isa.service.UserService;
+import io.github.resilience4j.ratelimiter.RequestNotPermitted;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -47,24 +48,27 @@ public class FollowerController {
     }
 
     @PostMapping("/{userId}/{followedUserId}")
-    public ResponseEntity<FollowerDto> create(@PathVariable Long userId, @PathVariable Long followedUserId) {
-        if (!followerService.canFollow(userId)) {
-            FollowerDto dto = new FollowerDto("Too many requests. Please try again later.");
-            return ResponseEntity.status(429).body(dto);
+    public ResponseEntity<?> create(@PathVariable Long userId, @PathVariable Long followedUserId) {
+        try {
+            User user = userService.findById(userId);
+
+            User followedUser = userService.findById(followedUserId);
+
+            if (user == null || followedUser == null) {
+                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            }
+
+            Follower follower = new Follower();
+            follower.setUser(user);
+            follower.setFollowedUser(followedUser);
+
+            follower = followerService.follow(follower);
+            return new ResponseEntity<>(new FollowerDto(follower), HttpStatus.CREATED);
+        }catch (RequestNotPermitted e) {
+            return ResponseEntity.status(429).body("Rate limit exceeded. Please try again later.");
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().body("An unexpected error occurred.");
         }
-        User user = userService.findById(userId);
-        User followedUser = userService.findById(followedUserId);
-
-        if(user == null || followedUser == null) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
-
-        Follower follower = new Follower();
-        follower.setUser(user);
-        follower.setFollowedUser(followedUser);
-
-        follower = followerService.follow(follower);
-        return new ResponseEntity<>(new FollowerDto(follower), HttpStatus.CREATED);
     }
 
     @DeleteMapping("/{userId}/{followedUserId}")
