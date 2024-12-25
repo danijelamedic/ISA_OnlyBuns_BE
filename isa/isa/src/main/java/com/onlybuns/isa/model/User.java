@@ -1,5 +1,8 @@
 package com.onlybuns.isa.model;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.onlybuns.isa.dto.UserDto;
 import jakarta.persistence.*;
 
@@ -23,9 +26,11 @@ public class User {
     private Role role;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
     private Set<Follower> following;
 
     @OneToMany(mappedBy = "followedUser", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
     private Set<Follower> followers;
 
 //    private String activationToken;
@@ -43,12 +48,15 @@ public class User {
     // ... Getters and Setters ...
 
     @OneToMany(mappedBy = "user")
-    private Set<Post> posts;  // Korisnik ima objave
+    @JsonManagedReference
+    private List<Post> posts;  // Korisnik ima objave
 
     @OneToMany(mappedBy = "user")
+    @JsonManagedReference
     private List<Comment> comments;  // Korisnik ima komentare
 
     @OneToMany(mappedBy = "user")
+    @JsonManagedReference
     private List<Like> likes;
 
     public User(String johndoe, String john, String doe, String mail, String s, String password123, Role role) {
@@ -95,11 +103,11 @@ public class User {
         this.name = name;
     }
 
-    public Set<Post> getPosts() {
+    public List<Post> getPosts() {
         return posts;
     }
 
-    public void setPosts(Set<Post> posts) {
+    public void setPosts(List<Post> posts) {
         this.posts = posts;
     }
 
@@ -156,6 +164,14 @@ public class User {
 
     public void setFollowers(Set<Follower> followers) {
         this.followers = followers;
+    }
+
+    public List<Comment> getComments() {
+        return comments;
+    }
+
+    public void setComments(List<Comment> comments) {
+        this.comments = comments;
     }
 }
 

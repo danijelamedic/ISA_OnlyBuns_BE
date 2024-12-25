@@ -10,6 +10,7 @@ import java.util.List;
 
 public interface CommentRepository extends JpaRepository<Comment, Long> {
     List<Comment> findByPost(Post post);
+    List<Comment> findByUserId(Long userId);
     @Query("SELECT COUNT(c) FROM Comment c WHERE MONTH(c.creationTime) = :month AND YEAR(c.creationTime) = :year")
     int countPerMonth(@Param("month") int month, @Param("year") int year);
 

@@ -16,7 +16,7 @@ public class CommentService {
     public List<Comment> findByPost(Post post) {
         return commentRepository.findByPost(post);
     }
-
+    public List<Comment> findByUserId(long userId) { return commentRepository.findByUserId(userId); }
     public int countCommentsPerMonth(int month, int year){ return commentRepository.countPerMonth(month,year);}
     public int countCommentsPerWeek(int week, int year){ return commentRepository.countPerWeek(week,year);}
     public int countCommentsPerYear(int year){ return commentRepository.countPerYear(year);}

@@ -187,5 +187,47 @@ public class AdminController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+    @GetMapping("/getPostPercent")
+    public ResponseEntity<Double> getPostPercent(){
+        try{
+            double number = userService.havePosts().size();
+            double countAll = userService.getTotalUsersCount();
+            double result = number / countAll * 100;
+            return ResponseEntity.ok(result);
+        }catch(Exception e){
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping("/getCommentPercent")
+    public ResponseEntity<Double> getCommentPercent(){
+        try{
+            double number = userService.haveComment().size();
+            double countAll = userService.getTotalUsersCount();
+            double result = number / countAll * 100;
+            return ResponseEntity.ok(result);
+        }catch(Exception e){
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping("/getHaveNotAny")
+    public ResponseEntity<Double> getHaveNotAny(){
+        try{
+            double number = userService.haveNotAny().size();
+            double countAll = userService.getTotalUsersCount();
+            double result = number / countAll * 100;
+            return ResponseEntity.ok(result);
+        }catch(Exception e){
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+/*
+    @GetMapping("getPostUser")
+    public ResponseEntity<List<UserDto>> getPostUser(){
+        List<UserDto> res = userService.havePosts();
+        return ResponseEntity.ok(res);
+    }*/
 }
 
