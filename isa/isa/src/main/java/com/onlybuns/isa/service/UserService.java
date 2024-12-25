@@ -16,6 +16,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 //import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -28,6 +29,11 @@ public class UserService {
     private UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final EmailService emailService;
+
+    @Autowired
+    private PostService postService;
+    @Autowired
+    private CommentService commentService;
 
     @Autowired
     public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, EmailService emailService) {
@@ -127,5 +133,36 @@ public class UserService {
 
     public long getTotalUsersCount(){
         return userRepository.count();
+    }
+
+    public List<User> havePosts(){
+        List<User> users = findAll(0, 1000).getContent();
+        List<User> result = new ArrayList<>();
+        for(User user : users){
+            if(!postService.findByUserId(user.getId()).isEmpty()){
+                result.add(user);
+            }
+        }
+        return result;
+    }
+
+    public List<User> haveComment(){
+        List<User> users = findAll(0, 1000).getContent();
+        List<User> result = new ArrayList<>();
+        for(User user : users){
+            if(!commentService.findByUserId(user.getId()).isEmpty() && postService.findByUserId(user.getId()).isEmpty())
+                result.add(user);
+        }
+        return result;
+    }
+
+    public List<User> haveNotAny(){
+        List<User> users = findAll(0, 1000).getContent();
+        List<User> result = new ArrayList<>();
+        for(User user : users){
+            if(commentService.findByUserId(user.getId()).isEmpty() && postService.findByUserId(user.getId()).isEmpty())
+                result.add(user);
+        }
+        return result;
     }
 }

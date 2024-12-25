@@ -1,4 +1,7 @@
 package com.onlybuns.isa.model;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
@@ -18,7 +21,7 @@ public class Comment{
     private User user;
 
     private String content;
-    private LocalDateTime timestamp;
+    private LocalDateTime creationTime;
 
     public Comment() {}
 
@@ -54,12 +57,12 @@ public class Comment{
         this.content = content;
     }
 
-    public LocalDateTime getTimestamp() {
-        return timestamp;
+    public LocalDateTime getCreationTime() {
+        return creationTime;
     }
 
-    public void setTimestamp(LocalDateTime timestamp) {
-        this.timestamp = timestamp;
+    public void setCreationTime(LocalDateTime creationTime) {
+        this.creationTime = creationTime;
     }
 
 

@@ -7,6 +7,7 @@ insert into users (email, name, surname, address, username, password, role) valu
 insert into users (email, name, surname, address, username, password, role) values ('bojana@example.com', 'Bojana', 'Bojanović', 'Ulica Bojane 7', 'bojana2014', '$2a$10$AfamkYjZEgyFSDqzlj/QLeN13GcmvFhG/XMmQZQONq/1F8iLTSC92', 1);
 insert into users (email, name, surname, address, username, password, role) values ('milana@example.com', 'Milana', 'Milanović', 'Ulica Milane 8', 'milana2014', '$2a$10$AfamkYjZEgyFSDqzlj/QLeN13GcmvFhG/XMmQZQONq/1F8iLTSC92', 1);
 insert into users (email, name, surname, address, username, password, role) values ('jovana@example.com', 'Jovana', 'Jovanić', 'Ulica Jovane 9', 'jovana2014', '$2a$10$AfamkYjZEgyFSDqzlj/QLeN13GcmvFhG/XMmQZQONq/1F8iLTSC92', 1);
+insert into users (email, name, surname, address, username, password, role) values ('admin@example.com', 'Admin', 'Admin', 'Ulica Jovane 9', 'admin', '$2a$10$AfamkYjZEgyFSDqzlj/QLeN13GcmvFhG/XMmQZQONq/1F8iLTSC93', 0);
 
 
 insert into location (latitude, longitude, address) values (44.8176, 20.4633, 'Beograd, Srbija');
@@ -43,18 +44,18 @@ insert into likes (post_id, user_id) values (4, 4);
 
 
 
-insert into comment (post_id, "timestamp", user_id, content) values (1, '2024-11-10 10:05:00', 8, 'This is a comment');
-insert into comment (post_id, "timestamp", user_id, content) values (2, '2024-11-10 11:05:00', 9, 'This is a comment');
-insert into comment (post_id, "timestamp", user_id, content) values (3, '2024-11-10 12:05:00', 7, 'This is a comment');
-insert into comment (post_id, "timestamp", user_id, content) values (1, '2024-11-10 10:10:00', 9, 'Great post!');
-insert into comment (post_id, "timestamp", user_id, content) values (1, '2024-11-10 10:15:00', 7, 'Interesting thought!');
-insert into comment (post_id, "timestamp", user_id, content) values (2, '2024-11-10 11:10:00', 8, 'Amazing content!');
-insert into comment (post_id, "timestamp", user_id, content) values (2, '2024-11-10 11:20:00', 7, 'Very informative!');
-insert into comment (post_id, "timestamp", user_id, content) values (3, '2024-11-10 12:10:00', 8, 'Nice post!');
-insert into comment (post_id, "timestamp", user_id, content) values (3, '2024-11-10 12:15:00', 9, 'Keep it up!');
-insert into comment (post_id, "timestamp", user_id, content) values (1, '2024-11-10 10:20:00', 8, 'Thanks for sharing!');
-insert into comment (post_id, "timestamp", user_id, content) values (2, '2024-11-10 11:25:00', 9, 'Really cool!');
-insert into comment (post_id, "timestamp", user_id, content) values (3, '2024-11-10 12:20:00', 7, 'Very helpful!');
+insert into comment (post_id, creation_time, user_id, content) values (1, '2024-10-10 10:05:00', 8, 'This is a comment');
+insert into comment (post_id, creation_time, user_id, content) values (2, '2024-11-10 11:05:00', 9, 'This is a comment');
+insert into comment (post_id, creation_time, user_id, content) values (3, '2024-11-10 12:05:00', 7, 'This is a comment');
+insert into comment (post_id, creation_time, user_id, content) values (1, '2024-11-10 10:10:00', 9, 'Great post!');
+insert into comment (post_id, creation_time, user_id, content) values (1, '2024-11-10 10:15:00', 7, 'Interesting thought!');
+insert into comment (post_id, creation_time, user_id, content) values (2, '2024-11-10 11:10:00', 8, 'Amazing content!');
+insert into comment (post_id, creation_time, user_id, content) values (2, '2024-11-10 11:20:00', 7, 'Very informative!');
+insert into comment (post_id, creation_time, user_id, content) values (3, '2024-11-10 12:10:00', 8, 'Nice post!');
+insert into comment (post_id, creation_time, user_id, content) values (3, '2024-11-10 12:15:00', 9, 'Keep it up!');
+insert into comment (post_id, creation_time, user_id, content) values (1, '2024-11-10 10:20:00', 8, 'Thanks for sharing!');
+insert into comment (post_id, creation_time, user_id, content) values (2, '2024-11-10 11:25:00', 9, 'Really cool!');
+insert into comment (post_id, creation_time, user_id, content) values (3, '2024-11-10 12:20:00', 7, 'Very helpful!');
 
 
 
