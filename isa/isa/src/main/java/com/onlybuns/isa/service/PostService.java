@@ -3,7 +3,10 @@ package com.onlybuns.isa.service;
 import com.onlybuns.isa.dto.PostDto;
 import com.onlybuns.isa.model.Post;
 import com.onlybuns.isa.repository.PostRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,11 +18,15 @@ public class PostService {
     @Autowired
     private LikeService likeService;
 
+    private final Logger LOG = LoggerFactory.getLogger(PostService.class);
+
     public List<Post> findAll() {
         return postRepository.findAll();
     }
 
+    @Cacheable("post")
     public Post findById(Long id) {
+        System.out.println("Fetching post from database for ID: " + id);
         return postRepository.findById(id).get();
     }
 
