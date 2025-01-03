@@ -1,5 +1,9 @@
 package com.onlybuns.isa.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.onlybuns.isa.dto.LikeDto;
 import jakarta.persistence.*;
 
@@ -11,11 +15,11 @@ public class Like {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "userId", nullable = false)
+    @JoinColumn(name = "userId", referencedColumnName = "id", nullable = false)
     private User user;
 
-    @ManyToOne
-    @JoinColumn(name = "postId", nullable = false)
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "postId", referencedColumnName = "id", nullable = false)
     private Post post;
 
     public Like() {}

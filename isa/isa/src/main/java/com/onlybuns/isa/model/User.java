@@ -1,10 +1,12 @@
 package com.onlybuns.isa.model;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.onlybuns.isa.dto.UserDto;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -19,9 +21,20 @@ public class User {
     private String name;
     private String surname;
     private String email;
+    private String address;
+    private String password;
+    private Role role;
 
-    @OneToMany(mappedBy = "posting", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private Set<Post> posts = new HashSet<Post>();
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
+    private Set<Follower> following;
+
+    @OneToMany(mappedBy = "followedUser", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
+    private Set<Follower> followers;
+
+//    private String activationToken;
+//    private boolean activated;
 
     public User() {}
     public User(UserDto user){
@@ -34,14 +47,26 @@ public class User {
 
     // ... Getters and Setters ...
 
-    /*@OneToMany(mappedBy = "user", cascade = CascadeType.PERSIST)
-    private List<Post> posts = new ArrayList<>();  // Korisnik ima objave
+    @OneToMany(mappedBy = "user")
+    @JsonManagedReference
+    private List<Post> posts;  // Korisnik ima objave
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.PERSIST)
-    private List<Comment> comments = new ArrayList<>();  // Korisnik ima komentare
+    @OneToMany(mappedBy = "user")
+    @JsonManagedReference
+    private List<Comment> comments;  // Korisnik ima komentare
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.PERSIST)
-    private List<Like> likes = new ArrayList<>();*/
+    @OneToMany(mappedBy = "user")
+    @JsonManagedReference
+    private List<Like> likes;
+
+    public User(String johndoe, String john, String doe, String mail, String s, String password123, Role role) {
+        this.username = johndoe;
+        this.name = john;
+        this.surname = doe;
+        this.email = mail;
+        this.password = s;
+        this.role = role;
+    }
 
     public Long getId(){
         return id;
@@ -78,31 +103,76 @@ public class User {
         this.name = name;
     }
 
-    public Set<Post> getPosts() {
-        return posts;
-    }
-
-    public void setPosts(Set<Post> posts) {
-        this.posts = posts;
-    }
-
-    public void addPost(Post post)
-    {
-        posts.add(post);
-        post.setUser(this);
-    }
-
-    public void removePost(Post post)
-    {
-        posts.remove(post);
-        post.setUser(null);
-    }
-
-    /*public List<Post> getPosts() {
+    public List<Post> getPosts() {
         return posts;
     }
 
     public void setPosts(List<Post> posts) {
         this.posts = posts;
-    }*/
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+//    public String getActivationToken() {
+//        return activationToken;
+//    }
+//
+//    public void setActivationToken(String activationToken) {
+//        this.activationToken = activationToken;
+//    }
+//
+//    public boolean isActivated() {
+//        return activated;
+//    }
+//
+//    public void setActivated(boolean activated) {
+//        this.activated = activated;
+//    }
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
+    }
+
+    public Set<Follower> getFollowing() {
+        return following;
+    }
+
+    public void setFollowing(Set<Follower> following) {
+        this.following = following;
+    }
+
+    public Set<Follower> getFollowers() {
+        return followers;
+    }
+
+    public void setFollowers(Set<Follower> followers) {
+        this.followers = followers;
+    }
+
+    public List<Comment> getComments() {
+        return comments;
+    }
+
+    public void setComments(List<Comment> comments) {
+        this.comments = comments;
+    }
 }
+
+

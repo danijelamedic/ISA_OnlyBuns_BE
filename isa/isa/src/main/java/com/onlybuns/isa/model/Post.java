@@ -1,23 +1,25 @@
 package com.onlybuns.isa.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 @Entity
-@Table(name="posts")
 public class Post {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH})
-    @JoinTable(name = "posting", joinColumns =  @JoinColumn(name = "user_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "post_id", referencedColumnName =  "id"))
-    private Set<User> users = new HashSet<User>();
+    @ManyToOne
+    @JoinColumn(name = "userId", nullable = false)
+    private User user;
 
     private String description;
     private String imagePath; // Putanja do slike zeca
@@ -29,24 +31,12 @@ public class Post {
     private LocalDateTime creationTime;
 
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
-    private List<Like> likes;
+    private Set<Like> likes = new HashSet<Like>();
 
-    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "post", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Comment> comments;
 
-    public Post() {
-        this.likes = new ArrayList<>();
-        this.comments = new ArrayList<>();
-    }
-
-    public Post(String description, String imagePath, Location location) {
-        this.description = description;
-        this.imagePath = imagePath;
-        this.location = location;
-        this.creationTime = LocalDateTime.now();
-        this.likes = new ArrayList<>();
-        this.comments = new ArrayList<>();
-    }
+    public Post() {}
 
     public Long getId() {
         return id;
@@ -56,12 +46,12 @@ public class Post {
         this.id = id;
     }
 
-    public Set<User> getUsers() {
-        return users;
+    public User getUser() {
+        return user;
     }
 
-    public void setUsers(Set<User> users) {
-        this.users = users;
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public String getDescription() {
@@ -96,11 +86,11 @@ public class Post {
         this.creationTime = creationTime;
     }
 
-    public List<Like> getLikes() {
+    public Set<Like> getLikes() {
         return likes;
     }
 
-    public void setLikes(List<Like> likes) {
+    public void setLikes(Set<Like> likes) {
         this.likes = likes;
     }
 
@@ -118,6 +108,11 @@ public class Post {
 
     public int getCommentsCount() {
         return (comments != null) ? comments.size() : 0;
+    }
+
+    public void addLike(Like like){
+        likes.add(like);
+        like.setPost(this);
     }
 
     // NIKOLINO ZAKOMENTARISANO:

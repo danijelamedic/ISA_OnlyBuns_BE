@@ -1,6 +1,7 @@
 package com.onlybuns.isa.dto;
 
 
+import com.onlybuns.isa.model.Role;
 import com.onlybuns.isa.model.User;
 
 public class UserDto {
@@ -9,6 +10,8 @@ public class UserDto {
     private String name;
     private String surname;
     private String email;
+    private Role role;
+    private int postsNum;
 
     public UserDto() {}
 
@@ -18,6 +21,24 @@ public class UserDto {
         this.name = user.getName();
         this.surname = user.getSurname();
         this.email = user.getEmail();
+        this.role = user.getRole();
+        this.postsNum = user.getPosts().size();
+    }
+
+    public int getPostsNum() {
+        return postsNum;
+    }
+
+    public void setPostsNum(int postsNum) {
+        this.postsNum = postsNum;
+    }
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
     }
 
     public Long getId() {

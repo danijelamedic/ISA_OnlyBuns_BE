@@ -9,7 +9,7 @@ public class CommentDto {
     private Long postId;
     private Long userId;
     private String content;
-    private LocalDateTime timestamp;
+    private LocalDateTime creationTime;
 
     public CommentDto() {}
 
@@ -18,7 +18,7 @@ public class CommentDto {
         this.postId = comment.getPost().getId();
         this.userId = comment.getUser().getId();
         this.content = comment.getContent();
-        this.timestamp = comment.getTimestamp();
+        this.creationTime = comment.getCreationTime();
     }
 
     public Long getId() {
@@ -53,11 +53,11 @@ public class CommentDto {
         this.content = content;
     }
 
-    public LocalDateTime getTimestamp() {
-        return timestamp;
+    public LocalDateTime getCreationTime() {
+        return creationTime;
     }
 
-    public void setTimestamp(LocalDateTime timestamp) {
-        this.timestamp = timestamp;
+    public void setCreationTime(LocalDateTime creationTime) {
+        this.creationTime = creationTime;
     }
 }
