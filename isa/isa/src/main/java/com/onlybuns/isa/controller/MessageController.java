@@ -1,11 +1,16 @@
 package com.onlybuns.isa.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.onlybuns.isa.service.RabbitMQProducer;
+import com.onlybuns.isa.dto.MessageDto;
+import com.onlybuns.isa.model.Message;
+import com.onlybuns.isa.service.MessageSender;
+import org.springframework.amqp.rabbit.annotation.RabbitListener;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,15 +23,15 @@ import java.util.Map;
 @RequestMapping("/api/chat")
 public class MessageController {
 
-    private final RabbitMQProducer rabbitMQProducer;
+    @Autowired
+    private MessageSender messageSender;
 
-    public MessageController(RabbitMQProducer rabbitMQProducer) {
-        this.rabbitMQProducer = rabbitMQProducer;
-    }
+    @Autowired
+    private RabbitTemplate rabbitTemplate;
 
     @PostMapping("/send")
-    public ResponseEntity<String> sendMessage(@RequestBody String message) {
-        rabbitMQProducer.sendMessage(message);
-        return ResponseEntity.ok("Message sent to RabbitMQ: " + message);
+    public void sendTestMessage(@RequestBody MessageDto message) {
+        messageSender.sendMessage(message);
     }
+
 }

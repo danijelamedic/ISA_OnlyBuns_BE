@@ -20,6 +20,8 @@ import java.util.Map;
 public class WebSocketController {
     @Autowired
     private SimpMessagingTemplate simpMessagingTemplate;
+    @Autowired
+    private ObjectMapper mapper;
 
     @CrossOrigin(origins = "http://localhost:4200")
     @RequestMapping(value="/sendMessageRest", method = RequestMethod.POST)
@@ -27,12 +29,15 @@ public class WebSocketController {
         if (message.containsKey("message")) {
             if (message.containsKey("toId") && message.get("toId") != null && !message.get("toId").equals("")) {
                 System.out.println("Slanje poruke korisniku: " + message.get("toId"));
-                this.simpMessagingTemplate.convertAndSend("/socket-publisher/" + message.get("toId"), message);
-
-                System.out.println("Slanje poruke korisniku: " + message.get("fromId"));
-                this.simpMessagingTemplate.convertAndSend("/socket-publisher/" + message.get("fromId"), message);
-            } else {
-                this.simpMessagingTemplate.convertAndSend("/socket-publisher", message);
+//                rabbitMQProducer.sendDirectMessage(message.get("fromId"), message.get("toId"), message.get("message"));
+            }
+            /*else if(message.containsKey("groupId") && message.get("groupId") != null && !message.get("groupId").equals("")) {
+                System.out.println("Slanje poruke grupi: " + message.get("groupId"));
+                rabbitMQProducer.sendTo(message.get("fromId"), message.get("groupId"), message.get("message"));
+                System.out.println("Message sent to RabbitMQ.");
+            }*/
+            else {
+//                rabbitMQProducer.sendDirectMessage("global", "global", message.get("message"));
             }
             return new ResponseEntity<>(message, new HttpHeaders(), HttpStatus.OK);
         }
@@ -49,9 +54,13 @@ public class WebSocketController {
                     && !messageConverted.get("toId").equals("")) {
                 this.simpMessagingTemplate.convertAndSend("/socket-publisher/" + messageConverted.get("toId"),
                         messageConverted);
-                this.simpMessagingTemplate.convertAndSend("/socket-publisher/" + messageConverted.get("fromId"),
+            }
+            /*else if(messageConverted.containsKey("groupId") && messageConverted.get("groupId") != null
+                    && !messageConverted.get("groupId").equals("")){
+                this.simpMessagingTemplate.convertAndSend("/socket-publisher/group/" + messageConverted.get("groupId"),
                         messageConverted);
-            } else {
+            }*/
+            else {
                 this.simpMessagingTemplate.convertAndSend("/socket-publisher", messageConverted);
             }
         }
@@ -61,7 +70,7 @@ public class WebSocketController {
 
     @SuppressWarnings("unchecked")
     private Map<String, String> parseMessage(String message) {
-        ObjectMapper mapper = new ObjectMapper();
+//        ObjectMapper mapper = new ObjectMapper();
         Map<String, String> retVal;
 
         try {
