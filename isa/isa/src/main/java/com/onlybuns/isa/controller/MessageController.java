@@ -1,5 +1,6 @@
 package com.onlybuns.isa.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.onlybuns.isa.dto.LikeDto;
 import com.onlybuns.isa.dto.MessageDto;
 import com.onlybuns.isa.model.Message;
 import com.onlybuns.isa.service.MessageSender;
@@ -18,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 @RestController
 @RequestMapping("/api/chat")
@@ -33,5 +35,4 @@ public class MessageController {
     public void sendTestMessage(@RequestBody MessageDto message) {
         messageSender.sendMessage(message);
     }
-
 }

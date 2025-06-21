@@ -41,6 +41,9 @@ public class ChatService {
     }
 
     private List<User> fetchParticipantsFromKey(String chatKey) {
+        if (chatKey.startsWith("group_")) {
+            chatKey = chatKey.substring(6); // skida "group_"
+        }
         String[] ids = chatKey.split("_");
         List<Long> userIds = new ArrayList<>();
         for (String id : ids) {

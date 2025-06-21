@@ -48,7 +48,12 @@ public class MessageSender {
     }
 
 
-    private String getChatKey(MessageDto messageDto) {
+    public String getChatKey(MessageDto messageDto) {
+        /*if (messageDto.getReceiverIds() == null || messageDto.getReceiverIds().isEmpty()) {
+            throw new IllegalArgumentException("ReceiverIds must not be null or empty");
+        }*/
+        System.out.println("ReceiverIds: " + messageDto.getReceiverIds());
+
         if (messageDto.getReceiverIds().size() == 1) {
             List<Long> ids = new ArrayList<>();
             ids.add(messageDto.getSenderId());

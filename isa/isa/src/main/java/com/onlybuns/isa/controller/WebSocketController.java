@@ -24,7 +24,7 @@ public class WebSocketController {
     private ObjectMapper mapper;
 
     @CrossOrigin(origins = "http://localhost:4200")
-    @RequestMapping(value="/sendMessageRest", method = RequestMethod.POST)
+    @RequestMapping(value="/sendMessage", method = RequestMethod.POST)
     public ResponseEntity<?> sendMessage(@RequestBody Map<String, String> message) {
         if (message.containsKey("message")) {
             if (message.containsKey("toId") && message.get("toId") != null && !message.get("toId").equals("")) {

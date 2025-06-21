@@ -61,7 +61,7 @@ public class MessageReciever {
         messageRepository.save(message);
 
 //        if(isUserPartOfChat(chatId, message)){
-        messagingTemplate.convertAndSend("/topic/chat/" + chatId, message);
+        messagingTemplate.convertAndSend("/topic/chat." + chat.getChatKey(), messageDto);
 //        }
     }
 
