@@ -4,6 +4,7 @@ import com.onlybuns.isa.dto.LikeDto;
 import com.onlybuns.isa.dto.MessageDto;
 import com.onlybuns.isa.model.Message;
 import com.onlybuns.isa.service.MessageSender;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +23,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 @RestController
-@RequestMapping("/api/chat")
+@RequestMapping("/api/message")
 public class MessageController {
 
     @Autowired
@@ -32,7 +33,12 @@ public class MessageController {
     private RabbitTemplate rabbitTemplate;
 
     @PostMapping("/send")
-    public void sendTestMessage(@RequestBody MessageDto message) {
+    public void sendMessage(@RequestBody MessageDto message) {
         messageSender.sendMessage(message);
+    }
+
+    @GetMapping("/getByChatId/{id}")
+    public List<MessageDto> getByChatId(@PathVariable Long id){
+        return messageSender.getMessagesByChatId(id);
     }
 }

@@ -13,7 +13,8 @@ public class MessageDto {
 
     public MessageDto() {}
 
-    public MessageDto(Long chatId, Long senderId, List<Long> receiverIds, String message, LocalDateTime dateTime) {
+    public MessageDto(Long id, Long chatId, Long senderId, List<Long> receiverIds, String message, LocalDateTime dateTime) {
+        this.id = id;
         this.chatId = chatId;
         this.senderId = senderId;
         this.receiverIds = receiverIds;

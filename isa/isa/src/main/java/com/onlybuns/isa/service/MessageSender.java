@@ -5,8 +5,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.onlybuns.isa.config.RabbitMQConfig;
 import com.onlybuns.isa.dto.ChatDto;
 import com.onlybuns.isa.dto.MessageDto;
+import com.onlybuns.isa.mapper.MessageMapper;
 import com.onlybuns.isa.model.Chat;
 import com.onlybuns.isa.model.Message;
+import com.onlybuns.isa.repository.MessageRepository;
 import org.springframework.amqp.core.AmqpAdmin;
 import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.amqp.core.Queue;
@@ -32,6 +34,9 @@ public class MessageSender {
 
     @Autowired
     private ChatService chatService;
+
+    @Autowired
+    private MessageRepository messageRepository;
 
     private final Map<String, String> activeChats = new ConcurrentHashMap<>();  // Cache za chatove
 
@@ -66,6 +71,10 @@ public class MessageSender {
             return activeChats.computeIfAbsent("group_" + messageDto.getReceiverIds().toString(),
                     key -> "group_" + UUID.randomUUID());
         }
+    }
+
+    public List<MessageDto> getMessagesByChatId(Long chatId) {
+        return messageRepository.findMessagesByChatId(chatId).stream().map(MessageMapper::toDto).toList();
     }
 
 }

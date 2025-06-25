@@ -1,6 +1,7 @@
 package com.onlybuns.isa.service;
 
 import com.onlybuns.isa.dto.ChatDto;
+import com.onlybuns.isa.mapper.ChatMapper;
 import com.onlybuns.isa.model.Chat;
 import com.onlybuns.isa.model.User;
 import com.onlybuns.isa.repository.ChatRepository;
@@ -60,11 +61,20 @@ public class ChatService {
         return chatRepository.findByName(name);
     }
 
-    public List<Chat> findAll() {
-        return chatRepository.findAll();
+    public List<ChatDto> findAll() {
+        return chatRepository.findAll().stream().map(ChatMapper::toDto).toList();
     }
 
     public void save(Chat chat) {
         chatRepository.save(chat);
     }
+
+    public List<ChatDto> findChatsByParticipantId(Long id){
+        return chatRepository.findChatsByParticipantId(id).stream().map(ChatMapper::toDto).toList();
+    }
+
+    public List<Long> findParticipantsIdsByChatId(Long chatId) {
+        return chatRepository.findParticipantsIdsByChatId(chatId);
+    }
+
 }
