@@ -54,9 +54,6 @@ public class MessageSender {
 
 
     public String getChatKey(MessageDto messageDto) {
-        /*if (messageDto.getReceiverIds() == null || messageDto.getReceiverIds().isEmpty()) {
-            throw new IllegalArgumentException("ReceiverIds must not be null or empty");
-        }*/
         System.out.println("ReceiverIds: " + messageDto.getReceiverIds());
 
         if (messageDto.getReceiverIds().size() == 1) {
@@ -68,8 +65,10 @@ public class MessageSender {
             return activeChats.computeIfAbsent(userPair, key -> userPair);
         }
         else {
-            return activeChats.computeIfAbsent("group_" + messageDto.getReceiverIds().toString(),
-                    key -> "group_" + UUID.randomUUID());
+            if (messageDto.getChatKey() == null || messageDto.getChatKey().isEmpty()) {
+                throw new IllegalArgumentException("Missing chatKey for group chat.");
+            }
+            return messageDto.getChatKey();
         }
     }
 

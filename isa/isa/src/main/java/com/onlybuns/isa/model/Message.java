@@ -18,19 +18,15 @@ public class Message {
     @ManyToOne
     public User sender;
 
-    @ManyToMany
-    public List<User> receivers;
-
     public String message;
     public LocalDateTime timestamp;
 
     public Message() {}
 
-    public Message(Long id, Chat chat, User sender, List<User> receivers, String message, LocalDateTime timestamp) {
+    public Message(Long id, Chat chat, User sender, String message, LocalDateTime timestamp) {
         this.id = id;
         this.chat = chat;
         this.sender = sender;
-        this.receivers = receivers;
         this.message = message;
         this.timestamp = timestamp;
     }
@@ -57,14 +53,6 @@ public class Message {
 
     public void setSender(User sender) {
         this.sender = sender;
-    }
-
-    public List<User> getReceivers() {
-        return receivers;
-    }
-
-    public void setReceivers(List<User> receivers) {
-        this.receivers = receivers;
     }
 
     public String getMessage() {

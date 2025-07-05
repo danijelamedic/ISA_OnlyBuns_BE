@@ -6,9 +6,13 @@ import com.onlybuns.isa.dto.UserDto;
 import com.onlybuns.isa.model.Chat;
 import com.onlybuns.isa.model.Message;
 import com.onlybuns.isa.model.User;
+import com.onlybuns.isa.repository.ChatRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 
 
+import java.util.List;
 import java.util.stream.Collectors;
+
 
 public class MessageMapper {
     public static MessageDto toDto(Message message) {
@@ -16,7 +20,6 @@ public class MessageMapper {
                 message.getId(),
                 message.getChat().getId(),
                 message.getSender().getId(),
-                message.getReceivers().stream().map(User::getId).collect(Collectors.toList()),
                 message.getMessage(),
                 message.getTimestamp()
         );

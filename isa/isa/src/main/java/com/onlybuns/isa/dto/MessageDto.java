@@ -10,14 +10,14 @@ public class MessageDto {
     private List<Long> receiverIds;
     private String message;
     private LocalDateTime dateTime;
+    private String chatKey;
 
     public MessageDto() {}
 
-    public MessageDto(Long id, Long chatId, Long senderId, List<Long> receiverIds, String message, LocalDateTime dateTime) {
+    public MessageDto(Long id, Long chatId, Long senderId, String message, LocalDateTime dateTime) {
         this.id = id;
         this.chatId = chatId;
         this.senderId = senderId;
-        this.receiverIds = receiverIds;
         this.message = message;
         this.dateTime = dateTime;
     }
@@ -68,5 +68,13 @@ public class MessageDto {
 
     public void setDateTime(LocalDateTime dateTime) {
         this.dateTime = dateTime;
+    }
+
+    public String getChatKey() {
+        return chatKey;
+    }
+
+    public void setChatKey(String chatKey) {
+        this.chatKey = chatKey;
     }
 }

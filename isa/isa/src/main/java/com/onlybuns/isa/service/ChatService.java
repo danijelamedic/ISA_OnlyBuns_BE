@@ -3,6 +3,7 @@ package com.onlybuns.isa.service;
 import com.onlybuns.isa.dto.ChatDto;
 import com.onlybuns.isa.mapper.ChatMapper;
 import com.onlybuns.isa.model.Chat;
+import com.onlybuns.isa.model.Type;
 import com.onlybuns.isa.model.User;
 import com.onlybuns.isa.repository.ChatRepository;
 import com.onlybuns.isa.repository.UserRepository;
@@ -33,24 +34,23 @@ public class ChatService {
                 .orElseGet(() -> {
                     Chat chat = new Chat();
                     chat.setChatKey(chatKey);
-                    chat.setType("private");
+                    chat.setType(Type.PRIVATE);
                     chat.setParticipants(fetchParticipantsFromKey(chatKey));
                     return chatRepository.save(chat);
                 });
 
-        return new ChatDto(chatt.getId(), chatt.getChatKey(), chatt.getName(), chatt.getType());
+        return ChatMapper.toDto(chatt);
     }
 
     private List<User> fetchParticipantsFromKey(String chatKey) {
-        if (chatKey.startsWith("group_")) {
-            chatKey = chatKey.substring(6); // skida "group_"
-        }
-        String[] ids = chatKey.split("_");
-        List<Long> userIds = new ArrayList<>();
-        for (String id : ids) {
-            userIds.add(Long.parseLong(id));
-        }
-        return userRepository.findAllById(userIds);
+        if (!chatKey.startsWith("group_")) {
+            String[] ids = chatKey.split("_");
+            List<Long> userIds = new ArrayList<>();
+            for (String id : ids) {
+                userIds.add(Long.parseLong(id));
+            }
+            return userRepository.findAllById(userIds);
+        } else return null;
     }
 
     public Chat findById(Long id) {
@@ -77,4 +77,35 @@ public class ChatService {
         return chatRepository.findParticipantsIdsByChatId(chatId);
     }
 
+    public void createGroupChat(ChatDto chatDto){
+        Chat chat = new Chat();
+        chat.setName(chatDto.getName());
+
+        String chatKey = "group_" + UUID.randomUUID().toString();
+        chat.setChatKey(chatKey);
+
+        chat.setType(chatDto.getType());
+
+        User admin = userRepository.getById(chatDto.getAdminId());
+        chat.setAdmin(admin);
+
+        List<User> participants = userRepository.findAllById(chatDto.getParticipantIds());
+        chat.setParticipants(participants);
+
+        chatRepository.save(chat);
+    }
+
+    public String findChatKeyById(Long chatId){
+        return chatRepository.findChatKeyById(chatId);
+    }
+
+    public void removeUserFromParticipants(Long userId, Long chatId){
+        Chat chat = chatRepository.findById(chatId)
+                .orElseThrow(() -> new RuntimeException("Chat not found"));
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        chat.getParticipants().remove(user);
+        chatRepository.save(chat);
+    }
 }

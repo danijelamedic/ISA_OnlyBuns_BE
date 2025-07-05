@@ -10,7 +10,8 @@ public class Chat {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String type;    // private ili group
+    @Enumerated(EnumType.STRING)
+    private Type type;    // private ili group
 
     @ManyToMany
     private List<User> participants;
@@ -23,21 +24,25 @@ public class Chat {
     @Column(unique = true)
     private String chatKey;
 
+    @ManyToOne
+    private User admin;
+
     public Chat() {}
 
-    public Chat(Long id, String type, List<User> participants, String name, String chatKey) {
+    public Chat(Long id, Type type, List<User> participants, String name, String chatKey, User admin) {
         this.id = id;
         this.type = type;
         this.participants = participants;
         this.name = name;
         this.chatKey = chatKey;
+        this.admin = admin;
     }
 
-    public String getType() {
+    public Type getType() {
         return type;
     }
 
-    public void setType(String type) {
+    public void setType(Type type) {
         this.type = type;
     }
 
@@ -79,5 +84,13 @@ public class Chat {
 
     public void setChatKey(String chatKey) {
         this.chatKey = chatKey;
+    }
+
+    public User getAdmin() {
+        return admin;
+    }
+
+    public void setAdmin(User admin) {
+        this.admin = admin;
     }
 }

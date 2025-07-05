@@ -5,6 +5,7 @@ import com.onlybuns.isa.dto.MessageDto;
 import com.onlybuns.isa.model.Chat;
 import com.onlybuns.isa.service.ChatService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -48,5 +49,22 @@ public class ChatController {
     @GetMapping("/getParticipants/{id}")
     public List<Long> getParticipants(@PathVariable Long id) {
         return chatService.findParticipantsIdsByChatId(id);
+    }
+
+    @PostMapping("/group")
+    public ResponseEntity<ChatDto> createGroupChat(@RequestBody ChatDto chatDto) {
+        chatService.createGroupChat(chatDto);
+        return ResponseEntity.ok(chatDto);
+    }
+
+    @GetMapping("/getKeyById/{id}")
+    public String getKeyById(@PathVariable Long id) {
+        return chatService.findChatKeyById(id);
+    }
+
+    @PutMapping("/deleteUserFromChat/{userId}/{chatId}")
+    public ResponseEntity<Void> deleteUserFromChat(@PathVariable Long userId, @PathVariable Long chatId) {
+        chatService.removeUserFromParticipants(userId, chatId);
+        return ResponseEntity.ok().build();
     }
 }

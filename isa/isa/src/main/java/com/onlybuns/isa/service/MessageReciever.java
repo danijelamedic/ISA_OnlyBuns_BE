@@ -52,9 +52,6 @@ public class MessageReciever {
             message.setSender(user);
         }
 
-        List<User> receivers = userRepository.findAllById(messageDto.getReceiverIds());
-        message.setReceivers(receivers);
-
         message.setMessage(messageDto.getMessage());
         message.setTimestamp(messageDto.getDateTime() != null ? messageDto.getDateTime() : LocalDateTime.now());
 

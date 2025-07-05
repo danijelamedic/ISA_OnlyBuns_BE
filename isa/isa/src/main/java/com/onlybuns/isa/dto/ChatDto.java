@@ -1,22 +1,25 @@
 package com.onlybuns.isa.dto;
 
+import com.onlybuns.isa.model.Type;
+
 import java.util.List;
 
 public class ChatDto {
     private Long id;
     private String chatKey;
     private String name;
-    private String type;
-    //private List<Long> participantIds;
-
+    private Type type;
+    private List<Long> participantIds;
+    private Long adminId;
     public ChatDto() {}
 
-    public ChatDto(Long id, String chatKey, String name, String type) {
+    public ChatDto(Long id, String chatKey, String name, Type type, List<Long> participantIds, Long adminId) {
         this.id = id;
         this.chatKey = chatKey;
         this.name = name;
         this.type = type;
-        //this.participantIds = participantIds;
+        this.participantIds = participantIds;
+        this.adminId = adminId;
     }
 
     public String getChatKey() {
@@ -43,20 +46,28 @@ public class ChatDto {
         this.name = name;
     }
 
-    public String getType() {
+    public Type getType() {
         return type;
     }
 
-    public void setType(String type) {
+    public void setType(Type type) {
         this.type = type;
     }
 
-   /* public List<Long> getParticipantIds() {
+    public List<Long> getParticipantIds() {
         return participantIds;
     }
 
     public void setParticipantIds(List<Long> participantIds) {
         this.participantIds = participantIds;
-    }*/
+    }
+
+    public Long getAdminId() {
+        return adminId;
+    }
+
+    public void setAdminId(Long adminId) {
+        this.adminId = adminId;
+    }
 }
 
