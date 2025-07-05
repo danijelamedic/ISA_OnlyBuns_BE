@@ -189,4 +189,15 @@ public class UserService {
 
         return user.getId();
     }
+
+    public String getCurrentUsername() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        if (authentication == null || !authentication.isAuthenticated()) {
+            throw new RuntimeException("User not authenticated");
+        }
+
+        return authentication.getName();
+    }
+
 }
