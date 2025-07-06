@@ -19,4 +19,6 @@ public interface CommentRepository extends JpaRepository<Comment, Long> {
 
     @Query("SELECT COUNT(c) FROM Comment c WHERE YEAR(c.creationTime) = :year")
     int countPerYear(@Param("year") int year);
+
+    List<Comment> findByPostIdOrderByCreationTimeAsc(Long postId);
 }
