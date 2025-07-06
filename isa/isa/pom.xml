@@ -105,8 +105,22 @@
 			<scope>test</scope>
 		</dependency>
 
+		<dependency>
+			<groupId>net.coobird</groupId>
+			<artifactId>thumbnailator</artifactId>
+			<version>0.4.20</version>
+		</dependency>
+
 
 	</dependencies>
+
+	<repositories>
+		<repository>
+			<id>central</id>
+			<name>Maven Central</name>
+			<url>https://repo1.maven.org/maven2</url>
+		</repository>
+	</repositories>
 
 	<build>
 		<plugins>
