@@ -27,6 +27,9 @@ public class CommentService {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private RateLimiter rateLimiter;
+
     public List<Comment> findByPost(Post post) {
         return commentRepository.findByPost(post);
     }
@@ -38,6 +41,10 @@ public class CommentService {
     // NOVO: metod za kreiranje komentara
     @Transactional
     public Comment addComment(Long userId, Long postId, String content) {
+        if (!rateLimiter.allowRequest(userId)) {
+            throw new RuntimeException("Prekoračen broj komentara u poslednjih 60 minuta");
+        }
+
         User user = userRepository.findById(userId).orElseThrow();
         Post post = postRepository.findById(postId).orElseThrow();
 
