@@ -119,16 +119,29 @@ public class PostController {
                     content = @Content(mediaType = "application/json", schema = @Schema(implementation = Post.class))),
             @ApiResponse(responseCode = "404", description = "comments not found", content = @Content)
     })
+
     @GetMapping(value = "/getComments/{postId}")
-    public ResponseEntity<List<CommentDto>> getComments(@PathVariable Long postId){
+    public ResponseEntity<List<CommentDto>> getComments(@PathVariable Long postId) {
         Post post = postService.findById(postId);
+        if (post == null) {
+            System.out.println("Post with ID " + postId + " not found.");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+
         List<Comment> comments = post.getComments();
+        if (comments == null) {
+            comments = new ArrayList<>(); // fallback zaštita
+        }
+
         List<CommentDto> commentsDtos = new ArrayList<>();
         for (Comment comment : comments) {
             commentsDtos.add(new CommentDto(comment));
         }
+
         return new ResponseEntity<>(commentsDtos, HttpStatus.OK);
     }
+
+
 
     @Operation(description = "Updates an existing post", method = "PUT")
     @ApiResponses(value = {

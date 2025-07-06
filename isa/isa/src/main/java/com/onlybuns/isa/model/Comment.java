@@ -1,23 +1,22 @@
 package com.onlybuns.isa.model;
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
-import jakarta.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
-public class Comment{
+public class Comment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name="postId", nullable = false)
+    @JoinColumn(name = "postId", nullable = false)
+    @JsonBackReference  // OVO JE KLJUČNO
     private Post post;
 
     @ManyToOne
-    @JoinColumn(name="userId", nullable = false)
+    @JoinColumn(name = "userId", nullable = false)
     private User user;
 
     private String content;
@@ -25,6 +24,7 @@ public class Comment{
 
     public Comment() {}
 
+    // Getteri i setteri
     public Long getId() {
         return id;
     }
@@ -64,5 +64,4 @@ public class Comment{
     public void setCreationTime(LocalDateTime creationTime) {
         this.creationTime = creationTime;
     }
-
 }
