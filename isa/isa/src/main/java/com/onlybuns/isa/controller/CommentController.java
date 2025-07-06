@@ -22,22 +22,30 @@ public class CommentController {
     private UserService userService; // Da možeš iz username dobiti ID
 
     @PostMapping
-    public ResponseEntity<CommentDto> addComment(@RequestBody CommentDto commentDto) {
-        Long userId = commentDto.getUserId();
-        Long postId = commentDto.getPostId();
-        String content = commentDto.getContent();
+    public ResponseEntity<?> addComment(@RequestBody CommentDto commentDto) {
+        try {
+            Long userId = commentDto.getUserId();
+            Long postId = commentDto.getPostId();
+            String content = commentDto.getContent();
 
-        Comment savedComment = commentService.addComment(userId, postId, content);
+            Comment savedComment = commentService.addComment(userId, postId, content);
 
-        CommentDto responseDto = new CommentDto();
-        responseDto.setId(savedComment.getId());
-        responseDto.setUserId(savedComment.getUser().getId());
-        responseDto.setUsername(savedComment.getUser().getUsername()); // ako imaš
-        responseDto.setPostId(savedComment.getPost().getId());
-        responseDto.setContent(savedComment.getContent());
-        responseDto.setCreationTime(savedComment.getCreationTime());
+            CommentDto responseDto = new CommentDto();
+            responseDto.setId(savedComment.getId());
+            responseDto.setUserId(savedComment.getUser().getId());
+            responseDto.setUsername(savedComment.getUser().getUsername());
+            responseDto.setPostId(savedComment.getPost().getId());
+            responseDto.setContent(savedComment.getContent());
+            responseDto.setCreationTime(savedComment.getCreationTime());
 
-        return ResponseEntity.ok(responseDto);
+            return ResponseEntity.ok(responseDto);
+
+        } catch (RuntimeException e) {
+            if (e.getMessage().contains("Prekoračen broj komentara")) {
+                return ResponseEntity.status(429).body("Prekoračen broj komentara u poslednjih 1 minut");
+            }
+            return ResponseEntity.status(500).body("Došlo je do greške");
+        }
     }
 
     @GetMapping("/post/{postId}")
