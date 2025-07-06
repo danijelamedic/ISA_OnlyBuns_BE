@@ -5,6 +5,8 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.onlybuns.isa.dto.UserDto;
 import jakarta.persistence.*;
+import java.time.LocalDateTime;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,6 +26,8 @@ public class User {
     private String address;
     private String password;
     private Role role;
+    @Column(name = "last_login_time")
+    private LocalDateTime lastLoginTime;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference
@@ -172,6 +176,14 @@ public class User {
 
     public void setComments(List<Comment> comments) {
         this.comments = comments;
+    }
+
+    public LocalDateTime getLastLoginTime() {
+        return lastLoginTime;
+    }
+
+    public void setLastLoginTime(LocalDateTime lastLoginTime) {
+        this.lastLoginTime = lastLoginTime;
     }
 }
 
