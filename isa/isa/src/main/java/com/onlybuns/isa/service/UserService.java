@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 //import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
@@ -42,7 +43,11 @@ public class UserService {
         this.emailService = emailService;
     }
 
-    public User findById(long id){ return userRepository.findById(id); }
+    //public User findById(long id){ return userRepository.findById(id); }
+    public User findById(long id) {
+        Optional<User> optionalUser = Optional.ofNullable(userRepository.findById(id));
+        return optionalUser.orElse(null);
+    }
 
     public User create(User user){
         return userRepository.save(user);

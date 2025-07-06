@@ -8,7 +8,7 @@ public class PostDto {
     private Long id;
     private Long userId;
     private String description;
-    private String imagePath;
+    private String imagePath;  // koristi se putanja umesto bajtova slike
     private LocalDateTime creationTime;
     private Long locationId;
     private int likes;
@@ -22,11 +22,10 @@ public class PostDto {
         this.description = post.getDescription();
         this.imagePath = post.getImagePath();
         this.creationTime = post.getCreationTime();
-        this.locationId = post.getLocation().getId();
-        this.likes = 0;
-        this.comments = 0;
+        this.locationId = post.getLocation() != null ? post.getLocation().getId() : null;
+        this.likes = post.getLikesCount();
+        this.comments = post.getCommentsCount();
     }
-
 
     public Long getId() {
         return id;
