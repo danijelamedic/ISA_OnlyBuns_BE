@@ -40,7 +40,7 @@ public class MessageSender {
 
     private final Map<String, String> activeChats = new ConcurrentHashMap<>();  // Cache za chatove
 
-    public void sendMessage(MessageDto message) {
+    public MessageDto sendMessage(MessageDto message) {
         String chatKey = getChatKey(message);
 
         ChatDto chat = chatService.findByChatKey(chatKey);
@@ -50,6 +50,7 @@ public class MessageSender {
 
         String routingKey = "chat." + chatKey;
         rabbitTemplate.convertAndSend("chat.topic.exchange", routingKey, message);
+        return message;
     }
 
 
@@ -74,6 +75,12 @@ public class MessageSender {
 
     public List<MessageDto> getMessagesByChatId(Long chatId) {
         return messageRepository.findMessagesByChatId(chatId).stream().map(MessageMapper::toDto).toList();
+    }
+
+    public List<MessageDto> getLast10Messages(Long chatId) {
+        List<Message> messages = messageRepository.findTop10ByChatIdOrderByTimestampDesc(chatId);
+        Collections.reverse(messages);
+        return messages.stream().map(MessageMapper::toDto).toList();
     }
 
 }

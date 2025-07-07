@@ -33,12 +33,19 @@ public class MessageController {
     private RabbitTemplate rabbitTemplate;
 
     @PostMapping("/send")
-    public void sendMessage(@RequestBody MessageDto message) {
-        messageSender.sendMessage(message);
+    public ResponseEntity<MessageDto> sendMessage(@RequestBody MessageDto message) {
+        MessageDto savedMessage = messageSender.sendMessage(message);
+        return ResponseEntity.ok(savedMessage);
     }
 
     @GetMapping("/getByChatId/{id}")
     public List<MessageDto> getByChatId(@PathVariable Long id){
         return messageSender.getMessagesByChatId(id);
     }
+
+    @GetMapping("/getLast10Messages/{id}")
+    public List<MessageDto> getLast10Messages(@PathVariable Long id){
+        return messageSender.getMessagesByChatId(id);
+    }
+
 }

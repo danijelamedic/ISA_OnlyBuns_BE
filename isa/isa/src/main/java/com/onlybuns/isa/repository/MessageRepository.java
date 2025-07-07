@@ -7,4 +7,6 @@ import java.util.List;
 
 public interface MessageRepository extends JpaRepository<Message, Long> {
     public List<Message> findMessagesByChatId(Long id);
+    List<Message> findTop10ByChatIdOrderByTimestampDesc(Long chatId);
+
 }

@@ -108,4 +108,14 @@ public class ChatService {
         chat.getParticipants().remove(user);
         chatRepository.save(chat);
     }
+
+    public void addUserToParticipants(Long userId, Long chatId){
+        Chat chat = chatRepository.findById(chatId)
+                .orElseThrow(() -> new RuntimeException("Chat not found"));
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        chat.getParticipants().add(user);
+        chatRepository.save(chat);
+    }
 }
