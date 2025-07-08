@@ -10,6 +10,7 @@ public class CommentDto {
     private Long userId;
     private String content;
     private LocalDateTime creationTime;
+    private String username;
 
     public CommentDto() {}
 
@@ -19,6 +20,7 @@ public class CommentDto {
         this.userId = comment.getUser().getId();
         this.content = comment.getContent();
         this.creationTime = comment.getCreationTime();
+        this.username = comment.getUser().getUsername();
     }
 
     public Long getId() {
@@ -60,4 +62,13 @@ public class CommentDto {
     public void setCreationTime(LocalDateTime creationTime) {
         this.creationTime = creationTime;
     }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
 }

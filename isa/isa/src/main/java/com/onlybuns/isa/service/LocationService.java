@@ -13,4 +13,8 @@ public class LocationService {
     public Location findById(long id){
         return locationRepository.findById(id);
     }
+
+    public Location save(Location location) {
+        return locationRepository.save(location);
+    }
 }

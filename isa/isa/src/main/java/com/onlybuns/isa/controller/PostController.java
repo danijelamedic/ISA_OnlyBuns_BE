@@ -1,15 +1,15 @@
 package com.onlybuns.isa.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.onlybuns.isa.dto.CommentDto;
 import com.onlybuns.isa.dto.PostDto;
 import com.onlybuns.isa.dto.UpdatePostDto;
 import com.onlybuns.isa.dto.UserDto;
 import com.onlybuns.isa.model.Comment;
+import com.onlybuns.isa.model.Location;
 import com.onlybuns.isa.model.Post;
-import com.onlybuns.isa.service.FollowerService;
-import com.onlybuns.isa.service.LikeService;
-import com.onlybuns.isa.service.LocationService;
-import com.onlybuns.isa.service.PostService;
+import com.onlybuns.isa.model.User;
+import com.onlybuns.isa.service.*;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -19,14 +19,23 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.hibernate.sql.Update;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.time.LocalDateTime;
+import java.util.*;
 import java.util.stream.Collectors;
+
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import org.springframework.web.multipart.MultipartFile;
+
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.bind.annotation.RequestPart;
 
 //@Tag(name="Post controller", description = "The post API")
 @RestController
@@ -41,6 +50,8 @@ public class PostController {
     private LocationService locationService;
     @Autowired
     private FollowerService followerService;
+    @Autowired
+    private UserService userService;
 
     @Operation(description = "Get all posts", method = "GET")
     @GetMapping(value = "/getAll")
@@ -108,16 +119,29 @@ public class PostController {
                     content = @Content(mediaType = "application/json", schema = @Schema(implementation = Post.class))),
             @ApiResponse(responseCode = "404", description = "comments not found", content = @Content)
     })
+
     @GetMapping(value = "/getComments/{postId}")
-    public ResponseEntity<List<CommentDto>> getComments(@PathVariable Long postId){
+    public ResponseEntity<List<CommentDto>> getComments(@PathVariable Long postId) {
         Post post = postService.findById(postId);
+        if (post == null) {
+            System.out.println("Post with ID " + postId + " not found.");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+
         List<Comment> comments = post.getComments();
+        if (comments == null) {
+            comments = new ArrayList<>(); // fallback zaštita
+        }
+
         List<CommentDto> commentsDtos = new ArrayList<>();
         for (Comment comment : comments) {
             commentsDtos.add(new CommentDto(comment));
         }
+
         return new ResponseEntity<>(commentsDtos, HttpStatus.OK);
     }
+
+
 
     @Operation(description = "Updates an existing post", method = "PUT")
     @ApiResponses(value = {
@@ -127,16 +151,19 @@ public class PostController {
             ),
             @ApiResponse(responseCode = "404", description = "Post not found", content = @Content)
     })
-    @PutMapping(consumes = "application/json")
-    public ResponseEntity<PostDto> updatePost(@RequestBody UpdatePostDto updatePostDto){
+
+    @PutMapping(consumes = {"multipart/form-data"})
+    public ResponseEntity<PostDto> updatePost(@RequestBody UpdatePostDto updatePostDto, @RequestPart(value = "imageFile", required = false) MultipartFile imageFile){
         Post post = postService.findById(updatePostDto.getId());
         if (post == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         if(updatePostDto.getDescription() != null)
             post.setDescription(updatePostDto.getDescription());
-        if(updatePostDto.getImagePath() != null)
-            post.setImagePath(updatePostDto.getImagePath());
+        if (imageFile != null && !imageFile.isEmpty()) {
+            String imagePath = saveImage(imageFile);
+            post.setImagePath(imagePath);
+        }
         post = postService.save(post);
         return new ResponseEntity<>(new PostDto(post), HttpStatus.OK);
     }
@@ -195,4 +222,106 @@ public class PostController {
         }
         return new ResponseEntity<>(postsDtos, HttpStatus.OK);
     }
+
+    private String saveImage(MultipartFile file) {
+        if (file == null || file.isEmpty()) {
+            System.out.println("saveImage: file is null or empty");
+            return null;
+        }
+        try {
+            //String uploadDir = "uploads/images";  // relativna putanja
+            String uploadDir = System.getProperty("user.dir") + File.separator + "uploads" + File.separator + "images";
+
+            Path uploadPath = Paths.get(uploadDir);
+
+            if (!Files.exists(uploadPath)) {
+                Files.createDirectories(uploadPath);
+                System.out.println("Created directory: " + uploadPath.toAbsolutePath());
+            }
+
+            String originalFilename = file.getOriginalFilename();
+            String extension = "";
+
+            if (originalFilename != null && originalFilename.contains(".")) {
+                extension = originalFilename.substring(originalFilename.lastIndexOf("."));
+            }
+
+            String newFilename = java.util.UUID.randomUUID().toString() + extension;
+            Path filePath = uploadPath.resolve(newFilename);
+
+            file.transferTo(filePath.toFile());
+
+            System.out.println("saveImage: saved file at " + filePath.toString());
+            return uploadDir + "/" + newFilename;
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+
+
+    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<PostDto> createPost(
+            @RequestPart("post") String postJson,
+            @RequestPart(value = "imageFile", required = false) MultipartFile imageFile) {
+
+        try {
+            ObjectMapper mapper = new ObjectMapper();
+            PostDto postDto = mapper.readValue(postJson, PostDto.class);
+
+            Long locationId = postDto.getLocationId();
+            Location location = null;
+            if (locationId != null) {
+                location = locationService.findById(locationId);
+                if (location == null) {
+                    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+                }
+            }
+
+            if (imageFile != null && !imageFile.isEmpty()) {
+                String imagePath = saveImage(imageFile);
+                postDto.setImagePath(imagePath);
+            }
+
+            // Kreiraj novi Post entitet
+            Post post = new Post();
+            post.setDescription(postDto.getDescription());
+            post.setLocation(location);
+            post.setImagePath(postDto.getImagePath());
+
+            /* //Postavi korisnika (npr. iz SecurityContext)
+            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+            if (auth != null && auth.isAuthenticated()) {
+                // Pretpostavljam da je principal tip User ili tvoj UserDetails sa getUser()
+                Object principal = auth.getPrincipal();
+                if (principal instanceof com.onlybuns.isa.model.User) {
+                    post.setUser((com.onlybuns.isa.model.User) principal);
+                } else {
+                    // ili dodatna logika za dobijanje User entiteta na osnovu principal-a
+                }
+            } else {
+                // Nije autentifikovan korisnik, možeš vratiti grešku ili ostaviti post.setUser(null);
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+            }*/
+            // Hardkodirano postavljanje korisnika sa id = 1
+            User user = userService.findById(1);
+            if (user == null) {
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+            }
+            post.setUser(user);
+
+            post.setCreationTime(LocalDateTime.now());
+
+            Post savedPost = postService.save(post);
+
+            return new ResponseEntity<>(new PostDto(savedPost), HttpStatus.CREATED);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
 }

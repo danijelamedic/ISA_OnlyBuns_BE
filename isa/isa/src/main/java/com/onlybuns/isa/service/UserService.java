@@ -18,7 +18,10 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 //import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 
@@ -42,7 +45,11 @@ public class UserService {
         this.emailService = emailService;
     }
 
-    public User findById(long id){ return userRepository.findById(id); }
+    //public User findById(long id){ return userRepository.findById(id); }
+    public User findById(long id) {
+        Optional<User> optionalUser = Optional.ofNullable(userRepository.findById(id));
+        return optionalUser.orElse(null);
+    }
 
     public User create(User user){
         return userRepository.save(user);
@@ -176,4 +183,32 @@ public class UserService {
         }
         return result;
     }
+
+    public Long getCurrentUserId() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        if (authentication == null || !authentication.isAuthenticated()) {
+            throw new RuntimeException("User not authenticated");
+        }
+
+        String username = authentication.getName();
+        User user = findByUsername(username);
+
+        if (user == null) {
+            throw new RuntimeException("User not found");
+        }
+
+        return user.getId();
+    }
+
+    public String getCurrentUsername() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        if (authentication == null || !authentication.isAuthenticated()) {
+            throw new RuntimeException("User not authenticated");
+        }
+
+        return authentication.getName();
+    }
+
 }
