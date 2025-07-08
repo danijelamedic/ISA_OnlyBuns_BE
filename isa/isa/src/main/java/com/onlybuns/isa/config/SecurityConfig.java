@@ -23,6 +23,7 @@ public class SecurityConfig {
                         .requestMatchers("/images/**").permitAll()
                         .requestMatchers("/api/admin/**").permitAll()
                         .requestMatchers("/api/like/**").permitAll()
+                        .requestMatchers("/api/messages/**").permitAll()
                         .requestMatchers("/api/users", "/api/users/register", "/api/users/login").permitAll()  // Omogućeno za rute za korisnike
                         .anyRequest().authenticated()
                 );

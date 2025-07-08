@@ -54,7 +54,7 @@ public class AdminController {
 
     @GetMapping("/users")
     public ResponseEntity<List<UserDto>> viewUsers(@RequestParam int page, @RequestParam int size) {
-        Page<User> users = userService.findAll(page, size);
+        Page<User> users = userService.findAllPaged(page, size);
 
         List<UserDto> usersDto = new ArrayList<>();
         for (User user : users) {

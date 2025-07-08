@@ -116,7 +116,7 @@ public class UserService {
 //                .orElseThrow(() -> new UsernameNotFoundException("User not found with username: " + username));
 //    }
 
-    public Page<User> findAll(int page, int size)
+    public Page<User> findAllPaged(int page, int size)
     {
         Pageable pageable = PageRequest.of(page, size);
         return userRepository.findAll(pageable);
@@ -143,7 +143,7 @@ public class UserService {
     }
 
     public List<User> havePosts(){
-        List<User> users = findAll(0, 1000).getContent();
+        List<User> users = findAllPaged(0, 1000).getContent();
         List<User> result = new ArrayList<>();
         for(User user : users){
             if(!postService.findByUserId(user.getId()).isEmpty()){
@@ -154,7 +154,7 @@ public class UserService {
     }
 
     public List<User> haveComment(){
-        List<User> users = findAll(0, 1000).getContent();
+        List<User> users = findAllPaged(0, 1000).getContent();
         List<User> result = new ArrayList<>();
         for(User user : users){
             if(!commentService.findByUserId(user.getId()).isEmpty() && postService.findByUserId(user.getId()).isEmpty())
@@ -164,11 +164,22 @@ public class UserService {
     }
 
     public List<User> haveNotAny(){
-        List<User> users = findAll(0, 1000).getContent();
+        List<User> users = findAllPaged(0, 1000).getContent();
         List<User> result = new ArrayList<>();
         for(User user : users){
             if(commentService.findByUserId(user.getId()).isEmpty() && postService.findByUserId(user.getId()).isEmpty())
                 result.add(user);
+        }
+        return result;
+    }
+
+    public List<UserDto> findAll(){
+        List<User> users = userRepository.findAll();
+        List<UserDto> result = new ArrayList<>();
+        UserDto userDto;
+        for(User user : users){
+            userDto = new UserDto(user);
+            result.add(userDto);
         }
         return result;
     }
