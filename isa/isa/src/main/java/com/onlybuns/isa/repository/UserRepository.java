@@ -20,10 +20,10 @@ public interface UserRepository extends JpaRepository<User, Long> {
     public List<User> findAll();
     public List<User> findByNameContainingIgnoreCase(String name);
     public List<User> findBySurnameContainingIgnoreCase(String surname);
-    public User findByEmailContainingIgnoreCase(String email);
+    public List<User> findByEmailContainingIgnoreCase(String email);
     @Query("SELECT u FROM User u WHERE (SELECT COUNT(p) FROM Post p WHERE p.user = u) BETWEEN :min AND :max")
     public List<User> findByPostsNumber(@Param("min") int min, @Param("max") int max);
-    public List<User> findAllByOrderByEmailAsc();
+    public Page<User> findAllByOrderByEmailAsc(Pageable pageable);
     Optional<User> findByUsername(String username);
     //Optional<User> findByActivationToken(String activationToken);
     long count();

@@ -86,14 +86,14 @@ public class AdminController {
     }
 
     @GetMapping(value = "/findByEmail/{email}")
-    public ResponseEntity<UserDto> findByEmail(@PathVariable String email){
-        User user = userService.findByEmail(email);
-
-        if(user == null) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    public ResponseEntity<List<UserDto>> findByEmail(@PathVariable String email){
+        List<User> users = userService.findByEmail(email);
+        List<UserDto> userDtos = new ArrayList<>();
+        for (User user : users) {
+            userDtos.add(new UserDto(user));
         }
 
-        return new ResponseEntity<>(new UserDto(user), HttpStatus.OK);
+        return new ResponseEntity<>(userDtos, HttpStatus.OK);
     }
 
     @GetMapping(value = "/findByPostsNumber")
@@ -107,13 +107,13 @@ public class AdminController {
     }
 
     @GetMapping(value = "/sortByEmail")
-    public ResponseEntity<List<UserDto>> sortByEmail(){
-        List<User> users = userService.sortByEmail();
-        List<UserDto> userDtos = new ArrayList<>();
+    public ResponseEntity<List<UserDto>> sortByEmail(@RequestParam int page, @RequestParam int size){
+        Page<User> users = userService.sortByEmail(page, size);
+        List<UserDto> usersDto = new ArrayList<>();
         for (User user : users) {
-            userDtos.add(new UserDto(user));
+            usersDto.add(new UserDto(user));
         }
-        return new ResponseEntity<>(userDtos, HttpStatus.OK);
+        return new ResponseEntity<>(usersDto, HttpStatus.OK);
     }
 
     @GetMapping("/users/count")
