@@ -128,14 +128,15 @@ public class UserService {
     public List<User> findBySurname(String surname){
         return userRepository.findBySurnameContainingIgnoreCase(surname);
     }
-    public User findByEmail(String email){
+    public List<User> findByEmail(String email){
         return userRepository.findByEmailContainingIgnoreCase(email);
     }
     public List<User> findByPostsNumber(int min, int max){
         return userRepository.findByPostsNumber(min, max);
     }
-    public List<User> sortByEmail(){
-        return userRepository.findAllByOrderByEmailAsc();
+    public Page<User> sortByEmail(int page, int size){
+        Pageable pageable = PageRequest.of(page, size);
+        return userRepository.findAllByOrderByEmailAsc(pageable);
     }
 
     public long getTotalUsersCount(){

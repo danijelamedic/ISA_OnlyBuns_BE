@@ -12,6 +12,7 @@ public class UserDto {
     private String email;
     private Role role;
     private int postsNum;
+    private int followerNum;
 
     public UserDto() {}
 
@@ -23,6 +24,7 @@ public class UserDto {
         this.email = user.getEmail();
         this.role = user.getRole();
         this.postsNum = user.getPosts().size();
+        this.followerNum = user.getFollowing().size();
     }
 
     public int getPostsNum() {
@@ -79,5 +81,13 @@ public class UserDto {
 
     public void setSurname(String surname) {
         this.surname = surname;
+    }
+
+    public int getFollowerNum() {
+        return followerNum;
+    }
+
+    public void setFollowerNum(int followerNum) {
+        this.followerNum = followerNum;
     }
 }
