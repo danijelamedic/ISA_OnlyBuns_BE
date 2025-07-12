@@ -8,6 +8,7 @@ import com.onlybuns.isa.service.LikeService;
 import com.onlybuns.isa.service.PostService;
 import com.onlybuns.isa.service.UserService;
 //import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -32,8 +33,7 @@ public class LikeController {
 
     @GetMapping(value = "/{postId}")
     public ResponseEntity<List<LikeDto>> getByPost(@PathVariable Long postId){
-        Post post = postService.findById(postId);
-        List<Like> likes = likeService.findByPost(post);
+        List<Like> likes = likeService.findByPostId(postId);
 
         List<LikeDto> likesDto = new ArrayList<>();
         for (Like like : likes) {
@@ -42,23 +42,16 @@ public class LikeController {
         return new ResponseEntity<>(likesDto, HttpStatus.OK);
     }
 
+    @GetMapping("/countLikes/{id}")
+    public ResponseEntity<Integer> countLikes(@PathVariable Long id){
+        int result = likeService.findByPostId(id).size();
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+
    // @PreAuthorize("permitAll()")
-    @PostMapping("/{postId}/{userId}")
-    public ResponseEntity<LikeDto> createLike(@PathVariable Long postId, @PathVariable Long userId){
-        Post post = postService.findById(postId);
-        User user = userService.findById(userId);
-
-        if(post == null || user == null){
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
-
-        Like like = new Like();
-        like.setUser(user);
-        like.setPost(post);
-
-        like = likeService.save(like);
-        post.addLike(like);
-        postService.save(post);
-        return new ResponseEntity<>(new LikeDto(like), HttpStatus.CREATED);
+    @PostMapping("/likePost/{postId}/{userId}")
+    public ResponseEntity<LikeDto> likePost(@PathVariable Long postId, @PathVariable Long userId){
+        LikeDto likeDto = likeService.likePost(postId, userId);
+        return ResponseEntity.status(HttpStatus.CREATED).body(likeDto);
     }
 }
