@@ -38,8 +38,8 @@ public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         // Dodavanje prilagođenih statičkih resursa, ako je potrebno
-        registry.addResourceHandler("/static/**")
-                .addResourceLocations("classpath:/static/");
+        registry.addResourceHandler("/uploads/images/**")
+                .addResourceLocations("file:" + System.getProperty("user.dir") + "/uploads/images/");
     }
 
     // Možete dodati i druge metode ako je potrebno, kao što su:

@@ -153,7 +153,7 @@ public class PostController {
     })
 
     @PutMapping(consumes = {"multipart/form-data"})
-    public ResponseEntity<PostDto> updatePost(@RequestBody UpdatePostDto updatePostDto, @RequestPart(value = "imageFile", required = false) MultipartFile imageFile){
+    public ResponseEntity<PostDto> updatePost(@RequestPart("updatePostDto") UpdatePostDto updatePostDto, @RequestPart(value = "imageFile", required = false) MultipartFile imageFile){
         Post post = postService.findById(updatePostDto.getId());
         if (post == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -162,6 +162,7 @@ public class PostController {
             post.setDescription(updatePostDto.getDescription());
         if (imageFile != null && !imageFile.isEmpty()) {
             String imagePath = saveImage(imageFile);
+            //String uploadDir = System.getProperty("user.dir") + File.separator + "uploads" + File.separator + "images";
             post.setImagePath(imagePath);
         }
         post = postService.save(post);
@@ -252,8 +253,8 @@ public class PostController {
             file.transferTo(filePath.toFile());
 
             System.out.println("saveImage: saved file at " + filePath.toString());
-            return uploadDir + "/" + newFilename;
-
+            //return uploadDir + "/" + newFilename;
+            return "uploads/images/" + newFilename;
         } catch (IOException e) {
             e.printStackTrace();
             return null;

@@ -1,10 +1,12 @@
 package com.onlybuns.isa.service;
 
 import com.onlybuns.isa.dto.PostDto;
+import com.onlybuns.isa.model.Like;
 import com.onlybuns.isa.model.Post;
 import com.onlybuns.isa.model.User;
 import com.onlybuns.isa.repository.PostRepository;
 import com.onlybuns.isa.repository.UserRepository;
+import org.hibernate.Hibernate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +14,7 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import com.onlybuns.isa.model.Location;
 import com.onlybuns.isa.service.LocationService;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
