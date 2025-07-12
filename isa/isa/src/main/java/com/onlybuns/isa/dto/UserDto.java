@@ -13,6 +13,7 @@ public class UserDto {
     private Role role;
     private int postsNum;
     private int followerNum;
+    private boolean activated;
 
     public UserDto() {}
 
@@ -25,6 +26,7 @@ public class UserDto {
         this.role = user.getRole();
         this.postsNum = user.getPosts().size();
         this.followerNum = user.getFollowing().size();
+        this.activated = user.isActivated();
     }
 
     public int getPostsNum() {
@@ -89,5 +91,13 @@ public class UserDto {
 
     public void setFollowerNum(int followerNum) {
         this.followerNum = followerNum;
+    }
+
+    public boolean isActivated() {
+        return activated;
+    }
+
+    public void setActivated(boolean activated) {
+        this.activated = activated;
     }
 }

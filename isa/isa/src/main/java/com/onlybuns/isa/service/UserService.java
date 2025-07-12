@@ -12,10 +12,12 @@ import org.springframework.context.event.EventListener;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -211,5 +213,19 @@ public class UserService {
 
         return authentication.getName();
     }
+
+    @Scheduled(cron = "0 0 0 L * ?")
+    public void deleteNotActivatedAccounts(){
+        System.out.println("Deleting not activated accounts");
+        List<User> notActivated = userRepository.findByActivatedFalse();
+        userRepository.deleteAll(notActivated);
+        System.out.println("Deleted " + notActivated.size() + " inactive users");
+    }
+
+    public boolean isLastDayOfMonth() {
+        LocalDate today = LocalDate.now();
+        return today.getDayOfMonth() == today.lengthOfMonth();
+    }
+
 
 }

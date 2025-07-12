@@ -26,6 +26,8 @@ public class User {
     private String address;
     private String password;
     private Role role;
+    @Column(name = "activated")
+    private boolean activated;
     @Column(name = "last_login_time")
     private LocalDateTime lastLoginTime;
 
@@ -47,6 +49,7 @@ public class User {
         this.name = user.getName();
         this.surname = user.getSurname();
         this.email = user.getEmail();
+        this.activated = user.isActivated();
     }
 
     // ... Getters and Setters ...
@@ -63,13 +66,15 @@ public class User {
     @JsonManagedReference
     private List<Like> likes;
 
-    public User(String johndoe, String john, String doe, String mail, String s, String password123, Role role) {
+    public User(String johndoe, String john, String doe, String mail, String s, String password123, Role role, boolean activated) {
         this.username = johndoe;
         this.name = john;
         this.surname = doe;
         this.email = mail;
         this.password = s;
         this.role = role;
+        this.activated = activated;
+
     }
 
     public Long getId(){
@@ -184,6 +189,14 @@ public class User {
 
     public void setLastLoginTime(LocalDateTime lastLoginTime) {
         this.lastLoginTime = lastLoginTime;
+    }
+
+    public boolean isActivated() {
+        return activated;
+    }
+
+    public void setActivated(boolean activated) {
+        this.activated = activated;
     }
 }
 

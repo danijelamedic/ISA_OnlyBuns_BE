@@ -28,5 +28,5 @@ public interface UserRepository extends JpaRepository<User, Long> {
     //Optional<User> findByActivationToken(String activationToken);
     long count();
     List<User> findByLastLoginTimeBefore(LocalDateTime dateTime);
-
+    List<User> findByActivatedFalse();
 }
