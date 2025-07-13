@@ -39,6 +39,9 @@ public class User {
     @JsonManagedReference
     private Set<Follower> followers;
 
+    @Column(name = "followers_count")
+    private int followersCount;
+
 //    private String activationToken;
 //    private boolean activated;
 
@@ -197,6 +200,14 @@ public class User {
 
     public void setActivated(boolean activated) {
         this.activated = activated;
+    }
+
+    public int getFollowersCount() {
+        return followersCount;
+    }
+
+    public void setFollowersCount(int followersCount) {
+        this.followersCount = followersCount;
     }
 }
 

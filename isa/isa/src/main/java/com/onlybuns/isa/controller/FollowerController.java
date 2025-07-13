@@ -4,6 +4,7 @@ import com.onlybuns.isa.dto.FollowerDto;
 import com.onlybuns.isa.dto.UserDto;
 import com.onlybuns.isa.model.Follower;
 import com.onlybuns.isa.model.User;
+import com.onlybuns.isa.service.FollowRetryService;
 import com.onlybuns.isa.service.FollowerService;
 import com.onlybuns.isa.service.UserService;
 import io.github.resilience4j.ratelimiter.RequestNotPermitted;
@@ -24,6 +25,9 @@ public class FollowerController {
     private FollowerService followerService;
     @Autowired
     private UserService userService;
+    @Autowired
+    private FollowRetryService followRetryService;
+
 
     @GetMapping(value = "/getByUser/{userId}")
     public ResponseEntity<List<FollowerDto>> getByUserId(@PathVariable Long userId) {
@@ -62,11 +66,13 @@ public class FollowerController {
             follower.setUser(user);
             follower.setFollowedUser(followedUser);
 
-            follower = followerService.follow(follower);
-            return new ResponseEntity<>(new FollowerDto(follower), HttpStatus.CREATED);
+            Follower savedFollower = followRetryService.followWithRetry(follower);
+
+            return new ResponseEntity<>(new FollowerDto(savedFollower), HttpStatus.CREATED);
         }catch (RequestNotPermitted e) {
             return ResponseEntity.status(429).body("Rate limit exceeded. Please try again later.");
         } catch (Exception e) {
+            e.printStackTrace();
             return ResponseEntity.internalServerError().body("An unexpected error occurred.");
         }
     }

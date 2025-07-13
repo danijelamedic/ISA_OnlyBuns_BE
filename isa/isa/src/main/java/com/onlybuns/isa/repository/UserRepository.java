@@ -2,10 +2,14 @@ package com.onlybuns.isa.repository;
 
 import com.onlybuns.isa.dto.UserDto;
 import com.onlybuns.isa.model.User;
+import jakarta.persistence.LockModeType;
+import jakarta.persistence.QueryHint;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Lock;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.jpa.repository.QueryHints;
 import org.springframework.data.repository.query.Param;
 import java.time.LocalDateTime;
 
@@ -29,4 +33,10 @@ public interface UserRepository extends JpaRepository<User, Long> {
     long count();
     List<User> findByLastLoginTimeBefore(LocalDateTime dateTime);
     List<User> findByActivatedFalse();
+//    @Lock(LockModeType.PESSIMISTIC_WRITE)
+    @Query(value = "select * from users where id = :id for update", nativeQuery = true)
+    User findByIdForUpdate(@Param("id") Long id);
+
+
+
 }
