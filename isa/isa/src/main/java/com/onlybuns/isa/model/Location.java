@@ -1,8 +1,12 @@
 package com.onlybuns.isa.model;
 
 import jakarta.persistence.*;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.Cache;
 
 @Entity
+@Cacheable
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class Location{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -27,7 +27,7 @@ public class User {
     private String password;
     private Role role;
     @Column(name = "activated")
-    private boolean activated;
+    private Boolean activated;
     @Column(name = "last_login_time")
     private LocalDateTime lastLoginTime;
 
