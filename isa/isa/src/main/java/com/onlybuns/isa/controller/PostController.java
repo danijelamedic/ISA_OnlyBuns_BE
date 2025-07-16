@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 import java.io.File;
@@ -36,6 +37,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.bind.annotation.RequestPart;
+
+import io.micrometer.core.instrument.MeterRegistry;
+import io.micrometer.core.annotation.Timed;
 
 //@Tag(name="Post controller", description = "The post API")
 @RestController
@@ -52,6 +56,12 @@ public class PostController {
     private FollowerService followerService;
     @Autowired
     private UserService userService;
+
+    private final MeterRegistry meterRegistry;
+
+    public PostController(MeterRegistry meterRegistry) {
+        this.meterRegistry = meterRegistry;
+    }
 
     @Operation(description = "Get all posts", method = "GET")
     @GetMapping(value = "/getAll")
@@ -263,10 +273,13 @@ public class PostController {
 
 
 
+    @Timed(value = "post_create_time_seconds", histogram = true, description = "Vreme trajanja kreiranja nove objave")
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<PostDto> createPost(
             @RequestPart("post") String postJson,
             @RequestPart(value = "imageFile", required = false) MultipartFile imageFile) {
+
+        long start = System.nanoTime();
 
         try {
             ObjectMapper mapper = new ObjectMapper();
@@ -316,6 +329,14 @@ public class PostController {
             post.setCreationTime(LocalDateTime.now());
 
             Post savedPost = postService.save(post);
+
+            // Ovde dodaj merenje aktivnosti korisnika:
+            meterRegistry.counter("user_activity", "userId", user.getId().toString()).increment();
+            //ovo iznad se brise kada daca uradi login, ovo je tren samo za test
+
+            long end = System.nanoTime();
+            long durationNanos = end - start;
+            meterRegistry.timer("post_create_time_seconds").record(durationNanos, TimeUnit.NANOSECONDS);
 
             return new ResponseEntity<>(new PostDto(savedPost), HttpStatus.CREATED);
 

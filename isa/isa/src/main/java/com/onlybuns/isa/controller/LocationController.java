@@ -19,6 +19,14 @@ public class LocationController {
 
     @PostMapping
     public ResponseEntity<Location> createLocation(@RequestBody Location location) {
+        Location existing = locationService.findByAddress(location.getAddress());
+        // Proveravam da li postoji lokacija sa tom adresom ( aktivira L2 kes)
+
+        if (existing != null) {
+            // Ako postoji, vrati postojecu lokaciju iz kesa ili baze
+            return new ResponseEntity<>(existing, HttpStatus.OK);
+        }
+
         Location savedLocation = locationService.save(location);
         return new ResponseEntity<>(savedLocation, HttpStatus.CREATED);
     }

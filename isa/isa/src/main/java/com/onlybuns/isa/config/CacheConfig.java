@@ -12,6 +12,6 @@ import java.time.Duration;
 public class CacheConfig {
     @Bean
     public CacheManager cacheManager() {
-        return new ConcurrentMapCacheManager("post");
+        return new ConcurrentMapCacheManager("post", "locations");
     }
 }

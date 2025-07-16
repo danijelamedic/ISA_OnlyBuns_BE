@@ -23,7 +23,7 @@ public class NotificationService {
     @Autowired
     private JavaMailSender mailSender;
 
-    @Scheduled(cron = "0 12 01 * * *") // svakog dana u 01:04
+    @Scheduled(cron = "0 18 20 * * *") // svakog dana u 01:04
     public void notifyInactiveUsers() {
         LocalDateTime oneWeekAgo = LocalDateTime.now().minusDays(7);
         List<User> inactiveUsers = userRepository.findByLastLoginTimeBefore(oneWeekAgo);
