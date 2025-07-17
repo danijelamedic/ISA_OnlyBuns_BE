@@ -18,6 +18,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -227,5 +228,9 @@ public class UserService {
         return today.getDayOfMonth() == today.lengthOfMonth();
     }
 
+    public int getActiveUsersLast24Hours() {
+        LocalDateTime since = LocalDateTime.now().minusHours(24);
+        return userRepository.countActiveUsersSince(since);
+    }
 
 }

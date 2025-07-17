@@ -114,8 +114,10 @@ public class PostService {
         // Postavljanje vremena kreiranja
         post.setCreationTime(LocalDateTime.now());
 
+
+        user.setLastActivityTime(LocalDateTime.now());
+        userRepository.save(user);
         // Čuvanje posta u bazi
         return postRepository.save(post);
     }
-
 }

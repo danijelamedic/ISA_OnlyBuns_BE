@@ -273,7 +273,7 @@ public class PostController {
 
 
 
-    @Timed(value = "post_create_time_seconds", histogram = true, description = "Vreme trajanja kreiranja nove objave")
+    @Timed(value = "http_post_create_duration_seconds", histogram = true, description = "Vreme trajanja kreiranja nove objave")
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<PostDto> createPost(
             @RequestPart("post") String postJson,
@@ -320,9 +320,13 @@ public class PostController {
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
             }*/
             // Hardkodirano postavljanje korisnika sa id = 1
-            User user = userService.findById(1);
+
+            Long userIdFromFront = postDto.getUserId();
+            System.out.println("asfd");
+            System.out.println("userIdFromFront je " + userIdFromFront);
+            User user = userService.findById(userIdFromFront);
             if (user == null) {
-                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
             }
             post.setUser(user);
 

@@ -7,6 +7,8 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.onlybuns.isa.dto.LikeDto;
 import jakarta.persistence.*;
 
+import java.time.LocalDateTime;
+
 @Entity
 @Table(name="likes")
 public class Like {
@@ -22,7 +24,12 @@ public class Like {
     @JoinColumn(name = "postId", referencedColumnName = "id", nullable = false)
     private Post post;
 
-    public Like() {}
+    @Column(name = "creation_time", nullable = false, updatable = false)
+    private LocalDateTime creationTime;
+
+    public Like() {
+        this.creationTime = LocalDateTime.now();  // postavi vreme pri kreiranju objekta
+    }
 
     public Long getId() {
         return id;
@@ -46,5 +53,13 @@ public class Like {
 
     public void setPost(Post post) {
         this.post = post;
+    }
+
+    public LocalDateTime getCreationTime() {
+        return creationTime;
+    }
+
+    public void setCreationTime(LocalDateTime creationTime) {
+        this.creationTime = creationTime;
     }
 }

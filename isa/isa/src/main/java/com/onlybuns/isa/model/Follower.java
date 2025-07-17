@@ -2,6 +2,8 @@ package com.onlybuns.isa.model;
 
 import jakarta.persistence.*;
 
+import java.time.LocalDateTime;
+
 @Entity
 public class Follower {
     @Id
@@ -15,6 +17,9 @@ public class Follower {
     @ManyToOne
     @JoinColumn(name = "followed_user_id", nullable = false)
     private User followedUser;
+
+    @Column(name = "follow_date")
+    private LocalDateTime followDate;
 
     public User getUser() {
         return user;
@@ -40,9 +45,20 @@ public class Follower {
         this.followedUser = followedUser;
     }
 
+    public LocalDateTime getFollowDate() {
+        return followDate;
+    }
+
+    public void setFollowDate(LocalDateTime followDate) {
+        this.followDate = followDate;
+    }
+
     public Follower(User user, User followedUser) {
         this.user = user;
         this.followedUser = followedUser;
+        this.followDate = LocalDateTime.now();  // postavi vreme praćenja na sada
     }
-    public Follower() {}
+    public Follower() {
+        this.followDate = LocalDateTime.now();  // postavi vreme pri kreiranju objekta
+    }
 }

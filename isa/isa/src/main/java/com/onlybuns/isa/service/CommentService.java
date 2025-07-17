@@ -48,13 +48,17 @@ public class CommentService {
         User user = userRepository.findById(userId).orElseThrow();
         Post post = postRepository.findById(postId).orElseThrow();
 
+        System.out.println("komentarisem.....");
+        System.out.println("userId je: " + userId);
         Comment comment = new Comment();
         comment.setUser(user);
         comment.setPost(post);
         comment.setContent(content);
         comment.setCreationTime(LocalDateTime.now());
 
+        user.setLastActivityTime(LocalDateTime.now());
         commentRepository.save(comment); // samo ovo mi treba
+        userRepository.save(user);
         return comment;
     }
 
@@ -74,5 +78,12 @@ public class CommentService {
         dto.setUserId(comment.getUser().getId());
         dto.setUsername(comment.getUser().getUsername()); // ako ti treba username na frontu
         return dto;
+    }
+
+    public int countNewComments(Long userId, LocalDateTime since) {
+        if (since == null) {
+            return 0;  // ili možeš vratiti ukupno komentara ako želiš
+        }
+        return commentRepository.countByPostUserIdAndCreationTimeAfter(userId, since);
     }
 }

@@ -8,8 +8,12 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
+import java.time.LocalDateTime;
+
 
 public interface LikeRepository extends JpaRepository<Like, Long> {
     public List<Like> findByPostId(Long postId);
     public boolean existsByPostAndUser(Post post, User user);
+
+    int countByPostUserIdAndCreationTimeAfter(Long userId, LocalDateTime since);
 }
