@@ -23,7 +23,7 @@ public class NotificationService {
     @Autowired
     private JavaMailSender mailSender;
 
-    @Scheduled(cron = "0 18 20 * * *") // svakog dana u 01:04
+    @Scheduled(cron = "0 49 21 * * *") // svakog dana u 21:29
     public void notifyInactiveUsers() {
         LocalDateTime oneWeekAgo = LocalDateTime.now().minusDays(7);
         List<User> inactiveUsers = userRepository.findByLastLoginTimeBefore(oneWeekAgo);
@@ -32,7 +32,7 @@ public class NotificationService {
 
         for (User user : inactiveUsers) {
             String stats = statisticsService.generateStatisticsForUser(user);
-            sendSimpleMessage(user.getEmail(), "We miss you!", stats);
+            sendSimpleMessage(user.getEmail(), "We miss you! \uD83E\uDD79", stats);
         }
     }
 

@@ -69,6 +69,10 @@ public class User {
     @JsonManagedReference
     private List<Like> likes;
 
+    @Column(name = "last_activity_time")
+    private LocalDateTime lastActivityTime;
+
+
     public User(String johndoe, String john, String doe, String mail, String s, String password123, Role role, boolean activated) {
         this.username = johndoe;
         this.name = john;
@@ -208,6 +212,15 @@ public class User {
 
     public void setFollowersCount(int followersCount) {
         this.followersCount = followersCount;
+    }
+
+
+    public LocalDateTime getLastActivityTime() {
+        return lastActivityTime;
+    }
+
+    public void setLastActivityTime(LocalDateTime lastActivityTime) {
+        this.lastActivityTime = lastActivityTime;
     }
 }
 

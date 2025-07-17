@@ -37,6 +37,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
     @Query(value = "select * from users where id = :id for update", nativeQuery = true)
     User findByIdForUpdate(@Param("id") Long id);
 
-
+    @Query("SELECT COUNT(u) FROM User u WHERE u.lastActivityTime >= :since")
+    int countActiveUsersSince(@Param("since") LocalDateTime since);
 
 }

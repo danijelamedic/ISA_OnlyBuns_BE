@@ -11,6 +11,7 @@ import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -38,7 +39,18 @@ public class LikeService {
         post.addLike(like);
         likeRepository.save(like);
         postRepository.save(post);
+        user.setLastActivityTime(LocalDateTime.now());
+        userRepository.save(user);
 
         return new LikeDto(like);
+    }
+
+    public int countNewLikes(Long userId, LocalDateTime since) {
+        if (since == null) {
+            // Ako nema vremena od kojeg računamo, možeš vratiti ukupno ili 0
+            return 0;
+        }
+        // Broj lajkova na postove koje je korisnik kreirao od datuma "since"
+        return likeRepository.countByPostUserIdAndCreationTimeAfter(userId, since);
     }
 }

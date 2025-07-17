@@ -24,6 +24,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -86,6 +87,9 @@ public class FollowerService {
     public Follower findByUserIdAndFollowerId(Long userId, Long followerId) { return followerRepository.findByUserIdAndFollowedUserId(userId, followerId); }
     public List<UserDto> findFollowedUsers(Long userId){
         User user = userService.findById(userId);
+        if (user == null) {
+            throw new IllegalArgumentException("Korisnik sa ID = " + userId + " nije pronađen.");
+        }
         List<Follower> followers = findByUserId(user.getId());  // dobavlja po user - oni koje user prati
         List<User> followingUsers = new ArrayList<>();
         for (Follower follower : followers) {
@@ -114,6 +118,12 @@ public class FollowerService {
             }
         }
     }
+
+    public int countNewFollowers(Long userId, LocalDateTime since) {
+        if (since == null) since = LocalDateTime.now().minusYears(10); // fallback ako nema lastLogin
+        return followerRepository.countByFollowedUserIdAndFollowDateAfter(userId, since);
+    }
+
 
 
 }

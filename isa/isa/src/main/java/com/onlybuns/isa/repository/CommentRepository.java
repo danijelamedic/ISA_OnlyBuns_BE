@@ -8,6 +8,8 @@ import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
+import java.time.LocalDateTime;
+
 public interface CommentRepository extends JpaRepository<Comment, Long> {
     List<Comment> findByPost(Post post);
     List<Comment> findByUserId(Long userId);
@@ -21,4 +23,6 @@ public interface CommentRepository extends JpaRepository<Comment, Long> {
     int countPerYear(@Param("year") int year);
 
     List<Comment> findByPostIdOrderByCreationTimeAsc(Long postId);
+
+    int countByPostUserIdAndCreationTimeAfter(Long userId, LocalDateTime since);
 }
