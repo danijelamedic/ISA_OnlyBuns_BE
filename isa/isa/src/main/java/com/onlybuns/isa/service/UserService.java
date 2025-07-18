@@ -50,8 +50,7 @@ public class UserService {
 
     //public User findById(long id){ return userRepository.findById(id); }
     public User findById(long id) {
-        Optional<User> optionalUser = Optional.ofNullable(userRepository.findById(id));
-        return optionalUser.orElse(null);
+        return userRepository.findById(id).orElse(null);
     }
 
     public User create(User user){

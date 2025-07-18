@@ -8,7 +8,7 @@ import com.onlybuns.isa.service.LikeService;
 import com.onlybuns.isa.service.PostService;
 import com.onlybuns.isa.service.UserService;
 //import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -49,9 +49,10 @@ public class LikeController {
     }
 
    // @PreAuthorize("permitAll()")
-    @PostMapping("/likePost/{postId}/{userId}")
-    public ResponseEntity<LikeDto> likePost(@PathVariable Long postId, @PathVariable Long userId){
-        LikeDto likeDto = likeService.likePost(postId, userId);
-        return ResponseEntity.status(HttpStatus.CREATED).body(likeDto);
-    }
+   @PostMapping("/likePost/{postId}/{userId}")
+   public ResponseEntity<LikeDto> likePost(@PathVariable Long postId, @PathVariable Long userId) throws InterruptedException {
+       LikeDto likeDto = likeService.likePost(postId, userId);
+       return ResponseEntity.status(HttpStatus.CREATED).body(likeDto);
+   }
+
 }

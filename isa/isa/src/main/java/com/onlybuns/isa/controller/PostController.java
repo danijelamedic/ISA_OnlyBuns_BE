@@ -1,10 +1,7 @@
 package com.onlybuns.isa.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.onlybuns.isa.dto.CommentDto;
-import com.onlybuns.isa.dto.PostDto;
-import com.onlybuns.isa.dto.UpdatePostDto;
-import com.onlybuns.isa.dto.UserDto;
+import com.onlybuns.isa.dto.*;
 import com.onlybuns.isa.model.Comment;
 import com.onlybuns.isa.model.Location;
 import com.onlybuns.isa.model.Post;
@@ -347,6 +344,18 @@ public class PostController {
         } catch (IOException e) {
             e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @PostMapping("/{postId}/like/{userId}")
+    public ResponseEntity<?> likePost(@PathVariable Long postId, @PathVariable Long userId) {
+        try {
+            LikeDto like = likeService.likePostWithLock(postId, userId);
+            return ResponseEntity.ok(like);
+        } catch (IllegalStateException e) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
+        } catch (InterruptedException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Interrupted");
         }
     }
 
