@@ -42,7 +42,7 @@ public class CommentService {
     @Transactional
     public Comment addComment(Long userId, Long postId, String content) {
         if (!rateLimiter.allowRequest(userId)) {
-            throw new RuntimeException("Prekoračen broj komentara u poslednjih 60 minuta");
+            throw new RuntimeException("Prekoračen broj komentara");
         }
 
         User user = userRepository.findById(userId).orElseThrow();
