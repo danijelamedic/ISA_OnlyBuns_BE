@@ -40,4 +40,10 @@ public interface UserRepository extends JpaRepository<User, Long> {
     @Query("SELECT COUNT(u) FROM User u WHERE u.lastActivityTime >= :since")
     int countActiveUsersSince(@Param("since") LocalDateTime since);
 
+    boolean existsByUsername(String username);
+    boolean existsByEmail(String email);
+    Optional<User> findByEmail(String email);
+
+
+
 }

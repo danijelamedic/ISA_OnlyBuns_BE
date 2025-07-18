@@ -3,7 +3,6 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/ISA_OnlyBuns_BE.iml" filepath="$PROJECT_DIR$/.idea/ISA_OnlyBuns_BE.iml" />
-      <module fileurl="file://$PROJECT_DIR$/isa/isa/isa.iml" filepath="$PROJECT_DIR$/isa/isa/isa.iml" />
     </modules>
   </component>
 </project>

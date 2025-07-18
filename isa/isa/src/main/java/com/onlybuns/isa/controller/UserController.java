@@ -25,7 +25,9 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 // http://localhost:8080/swagger-ui/index.html
 
@@ -98,9 +100,9 @@ public class UserController {
     })
     @GetMapping("/activate")
     public ResponseEntity<String> activateUser(@RequestParam("token") String token) {
-        //boolean isActivated = userService.activateUser(token);
+        boolean isActivated = userService.activateUser(token);
 
-        boolean isActivated = true;
+        //boolean isActivated = true;
         if (isActivated) {
             return ResponseEntity.ok("User activated successfully.");
         } else {
@@ -115,16 +117,34 @@ public class UserController {
             @ApiResponse(responseCode = "401", description = "Invalid username or password"),
             @ApiResponse(responseCode = "500", description = "Login failed")
     })
+//    @PostMapping("/login")
+//    public ResponseEntity<String> loginUser(@RequestBody UserLoginDto userLoginDto) {
+//        User user = userService.findOneByEmail(userLoginDto.getEmail());
+//
+//        if (user != null && passwordEncoder.matches(userLoginDto.getPassword(), user.getPassword())) {
+//            return ResponseEntity.ok("Login successful!");
+//        } else {
+//            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid email or password");
+//        }
+//    }
     @PostMapping("/login")
-    public ResponseEntity<String> loginUser(@RequestBody UserLoginDto userLoginDto) {
-        User user = userService.findByUsername(userLoginDto.getUsername());
+    public ResponseEntity<?> loginUser(@RequestBody UserLoginDto userLoginDto) {
+        User user = userService.findOneByEmail(userLoginDto.getEmail());
 
         if (user != null && passwordEncoder.matches(userLoginDto.getPassword(), user.getPassword())) {
-            return ResponseEntity.ok("Login successful!");
+            Map<String, Object> response = new HashMap<>();
+            response.put("message", "Login successful!");
+            response.put("userId", user.getId());
+            response.put("email", user.getEmail());
+            response.put("username", user.getUsername());
+            // Dodaj još polja po potrebi
+            return ResponseEntity.ok(response);
         } else {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid username or password");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body("Invalid email or password");
         }
     }
+
 
     @GetMapping("/getAll")
     public ResponseEntity<List<UserDto>> getAllUsers() {
