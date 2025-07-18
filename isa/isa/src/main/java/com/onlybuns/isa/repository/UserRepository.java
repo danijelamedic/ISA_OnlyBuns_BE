@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface UserRepository extends JpaRepository<User, Long> {
-    public User findById(long id); //kaze gpt nepotrebno ako vec nasledjuje jparepository??
+    Optional<User> findById(Long id);
    // User create(User user);
     public Page<User> findAll(Pageable pageable);
     public List<User> findAll();
