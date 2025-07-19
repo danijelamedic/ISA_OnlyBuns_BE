@@ -13,6 +13,8 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -37,14 +39,16 @@ import java.util.Map;
 @Validated
 public class UserController {
 
+    private static final Logger log = LoggerFactory.getLogger(UserController.class);
     @Autowired
     private UserService userService;
-    private final PasswordEncoder passwordEncoder;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @Autowired
-    public UserController(UserService userService, PasswordEncoder passwordEncoder) {
+    public UserController(UserService userService) {
         this.userService = userService;
-        this.passwordEncoder = passwordEncoder;
+        //this.passwordEncoder = passwordEncoder;
     }
     @Autowired
     private UserRepository userRepository;
@@ -130,6 +134,15 @@ public class UserController {
     @PostMapping("/login")
     public ResponseEntity<?> loginUser(@RequestBody UserLoginDto userLoginDto) {
         User user = userService.findOneByEmail(userLoginDto.getEmail());
+        log.info("KORISNIK: " + user.getUsername() + user.getEmail());
+        System.out.println("Hash iz baze: " + user.getPassword());
+
+        String rawPassword = userLoginDto.getPassword();
+        String encodedPassword = passwordEncoder.encode(rawPassword);
+        System.out.println("Encode unete lozinke: " + encodedPassword);
+        System.out.println("Hash iz baze: " + user.getPassword());
+        System.out.println("Da li se poklapa? " + passwordEncoder.matches(rawPassword, user.getPassword()));
+
 
         if (user != null && passwordEncoder.matches(userLoginDto.getPassword(), user.getPassword())) {
             Map<String, Object> response = new HashMap<>();
