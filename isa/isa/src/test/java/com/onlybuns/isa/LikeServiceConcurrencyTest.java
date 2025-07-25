@@ -61,8 +61,8 @@ public class LikeServiceConcurrencyTest {
     public void testConcurrentLikes() throws InterruptedException, ExecutionException {
         ExecutorService executor = Executors.newFixedThreadPool(2);
 
-        Callable<LikeDto> user1Task = () -> likeService.likePost(postId, userId1);
-        Callable<LikeDto> user2Task = () -> likeService.likePost(postId, userId2);
+        Callable<LikeDto> user1Task = () -> likeService.likePostWithLock(postId, userId1);
+        Callable<LikeDto> user2Task = () -> likeService.likePostWithLock(postId, userId2);
 
         Future<LikeDto> future1 = executor.submit(user1Task);
         Future<LikeDto> future2 = executor.submit(user2Task);
